@@ -3,1001 +3,924 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Moji radovi</title>
-
+    <meta
+      name="description"
+      content="Bruno Gajger — laboratorijske vježbe, zadaće i projekti. Učenje kroz praktičan rad."
+    />
+    <meta name="theme-color" content="#f6f5f0" />
+    <title>Bruno Gajger — Moji radovi</title>
     <style>
-      /* =========================================================
-           OSNOVNE POSTAVKE
-        ========================================================= */
-
+      /* 01. BOJE I OSNOVNE POSTAVKE — boje cijele stranice mijenjaš ovdje. */
+      :root {
+        --paper: #f6f5f0;
+        --ink: #22251f;
+        --muted: #62665d;
+        --line: #d9dcd1;
+        --accent: #d3f789;
+        --radius: 22px;
+      }
       * {
-        margin: 0;
-        padding: 0;
         box-sizing: border-box;
       }
-
       html {
         scroll-behavior: smooth;
+        scroll-padding-top: 110px;
       }
-
       body {
-        font-family: Arial, Helvetica, sans-serif;
-        background: #f5f4f0;
-        color: #181818;
-        line-height: 1.5;
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Segoe UI", Arial, sans-serif;
+        line-height: 1.6;
       }
-
+      ::selection {
+        background: var(--accent);
+        color: var(--ink);
+      }
       a {
         color: inherit;
         text-decoration: none;
       }
-
-      img {
-        width: 100%;
-        display: block;
+      a:focus-visible {
+        outline: 3px solid #557328;
+        outline-offset: 6px;
       }
-
-      /* =========================================================
-           NAVIGACIJA
-        ========================================================= */
-
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      .wrap {
+        width: min(1320px, calc(100% - 80px));
+        margin-inline: auto;
+      }
+      .skip {
+        position: fixed;
+        top: -100px;
+        left: 20px;
+        z-index: 100;
+        padding: 12px 20px;
+        background: var(--accent);
+      }
+      .skip:focus {
+        top: 15px;
+      }
+      .eyebrow {
+        font:
+          600 11px/1.5 Consolas,
+          monospace;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      /* 02. NAVIGACIJA */
       header {
         position: sticky;
         top: 0;
-        z-index: 1000;
-
-        background: rgba(245, 244, 240, 0.92);
+        z-index: 10;
+        background: rgba(246, 245, 240, 0.94);
+        border-bottom: 1px solid var(--line);
         backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-
-        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
       }
-
       .navbar {
-        width: min(1400px, calc(100% - 60px));
-        height: 84px;
-
-        margin: 0 auto;
-
+        min-height: 82px;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 24px;
       }
-
       .logo {
-        font-size: 24px;
-        font-weight: 700;
-        letter-spacing: -1px;
-      }
-
-      .nav-links {
         display: flex;
         align-items: center;
-        gap: 38px;
-
-        list-style: none;
+        gap: 11px;
+        font-size: 17px;
+        font-weight: 750;
+        letter-spacing: -0.6px;
       }
-
-      .nav-links a {
-        position: relative;
-
+      .logo-mark {
+        display: grid;
+        place-items: center;
+        width: 35px;
+        height: 35px;
+        background: var(--ink);
+        color: var(--accent);
+        border-radius: 10px;
         font-size: 14px;
-        font-weight: 500;
       }
-
-      .nav-links a::after {
-        content: "";
-
-        position: absolute;
-        left: 0;
-        bottom: -7px;
-
-        width: 0;
-        height: 1px;
-
-        background: #181818;
-
-        transition: width 0.3s ease;
-      }
-
-      .nav-links a:hover::after {
-        width: 100%;
-      }
-
-      /* =========================================================
-           HERO
-        ========================================================= */
-
-      .hero {
-        width: min(1400px, calc(100% - 60px));
-
-        min-height: 620px;
-
-        margin: 32px auto 0;
-
-        padding: 80px;
-
+      nav ul {
         display: flex;
-        align-items: flex-end;
-
-        border-radius: 4px;
-
-        background:
-          radial-gradient(
-            circle at 75% 30%,
-            rgba(255, 255, 255, 0.7),
-            transparent 30%
-          ),
-          linear-gradient(135deg, #d8d4c9, #b7b1a1);
-
-        overflow: hidden;
+        gap: 8px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      nav li a {
+        display: block;
+        padding: 11px 19px;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: background 0.2s;
+      }
+      nav li a:hover {
+        background: #e6e9de;
+      }
+      nav li:last-child a {
+        background: var(--ink);
+        color: var(--paper);
+      }
+      nav li:last-child a:hover {
+        background: #454d3e;
+      }
+      /* 03. UVOD — vizual je nacrtan isključivo CSS-om. */
+      .hero {
+        padding-top: 65px;
+      }
+      .hero-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        color: var(--muted);
+      }
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .status::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #638735;
+        box-shadow: 0 0 0 4px #e5ecd9;
+      }
+      .hero-layout {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        align-items: center;
+        gap: 60px;
+        padding: 42px 0 58px;
+      }
+      h1 {
+        font-size: clamp(64px, 8vw, 112px);
+        letter-spacing: -0.075em;
+        line-height: 0.98;
+        font-weight: 550;
+      }
+      h1 span {
+        display: block;
+        color: #7b836f;
+      }
+      .hero-copy > p {
+        max-width: 395px;
+        color: var(--muted);
+        font-size: 17px;
+        margin-top: 28px;
+      }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 35px;
+        min-height: 52px;
+        padding: 13px 21px;
+        border-radius: 30px;
+        font-weight: 650;
+        font-size: 13px;
+        background: var(--ink);
+        color: white;
+        margin-top: 28px;
+        transition:
+          transform 0.2s,
+          background 0.2s;
+      }
+      .button:hover {
+        transform: translateY(-3px);
+        background: #454d3e;
+      }
+      .hero-art {
         position: relative;
+        min-height: 410px;
+        border-radius: 28px;
+        overflow: hidden;
+        background:
+          radial-gradient(ellipse at 70% 30%, #444e37, transparent 70%), #22271f;
+        color: var(--accent);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 26px;
+        isolation: isolate;
       }
-
-      .hero::before {
-        content: "";
-
-        position: absolute;
-
-        width: 420px;
-        height: 420px;
-
-        top: -100px;
-        right: -70px;
-
-        border-radius: 50%;
-
-        background: rgba(255, 255, 255, 0.22);
-      }
-
-      .hero::after {
-        content: "";
-
-        position: absolute;
-
-        width: 230px;
-        height: 230px;
-
-        right: 240px;
-        bottom: -100px;
-
-        border-radius: 50%;
-
-        border: 1px solid rgba(255, 255, 255, 0.5);
-      }
-
-      .hero-content {
-        max-width: 800px;
+      .art-top,
+      .art-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         position: relative;
         z-index: 2;
       }
-
-      .hero-label {
-        display: inline-block;
-
-        margin-bottom: 20px;
-
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
+      .art-top {
+        color: #c9d2be;
+      }
+      .art-bottom {
+        color: #c9d2be;
+        font:
+          11px Consolas,
+          monospace;
+      }
+      .art-symbol {
+        font-size: 24px;
+      }
+      .orbit {
+        position: absolute;
+        width: 360px;
+        height: 360px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(-28deg);
+        border: 1px solid #a1b47a;
+        border-radius: 50%;
+        box-shadow:
+          inset 0 0 42px #bfd78c15,
+          0 0 42px #bfd78c15;
+      }
+      .orbit::before,
+      .orbit::after {
+        content: "";
+        position: absolute;
+        inset: 24px 65px;
+        border: 1px solid #b8d290;
+        border-radius: 50%;
+      }
+      .orbit::after {
+        inset: 65px 24px;
+      }
+      .monogram {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        font-size: clamp(90px, 11vw, 155px);
         font-weight: 600;
+        letter-spacing: -0.09em;
+        text-shadow: 0 10px 40px #0004;
       }
-
-      .hero h1 {
-        font-size: clamp(52px, 8vw, 108px);
-
-        font-weight: 500;
-
-        letter-spacing: -6px;
-        line-height: 0.9;
-
-        margin-bottom: 30px;
+      .art-star {
+        position: absolute;
+        top: 50px;
+        right: 55px;
+        font-size: 66px;
+        line-height: 1;
       }
-
-      .hero p {
-        max-width: 560px;
-
-        font-size: 18px;
-
-        color: rgba(0, 0, 0, 0.68);
+      .hero-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        padding: 19px 0;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        color: var(--muted);
       }
-
-      /* =========================================================
-           GLAVNI SADRŽAJ
-        ========================================================= */
-
-      main {
-        width: min(1400px, calc(100% - 60px));
-        margin: 0 auto;
+      .hero-bottom span:last-child {
+        font-size: 12px;
       }
-
-      /* =========================================================
-           SEKCIJE
-        ========================================================= */
-
+      /* 04. SEKCIJE — svaka sekcija ima vlastitu boju kartica. */
       .work-section {
-        padding: 130px 0;
+        padding: 78px 0 8px;
+        --tile: #e8eddf;
+        --tile-ink: #576946;
       }
-
-      .work-section + .work-section {
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
+      #zadace {
+        --tile: #ede6dd;
+        --tile-ink: #816950;
       }
-
+      #projekti {
+        --tile: #e3e6ef;
+        --tile-ink: #596887;
+      }
       .section-header {
         display: flex;
         justify-content: space-between;
-        align-items: flex-end;
-
-        gap: 40px;
-
-        margin-bottom: 55px;
+        align-items: end;
+        gap: 25px;
+        margin-bottom: 27px;
       }
-
       .section-number {
+        color: var(--muted);
         display: block;
-
-        margin-bottom: 12px;
-
-        font-size: 12px;
-        letter-spacing: 2px;
-
-        color: #7d7d78;
+        margin-bottom: 11px;
       }
-
-      .section-header h2 {
-        font-size: clamp(45px, 6vw, 78px);
+      h2 {
+        font-size: clamp(36px, 4.3vw, 57px);
         font-weight: 500;
-
-        letter-spacing: -4px;
-        line-height: 1;
+        line-height: 1.1;
+        letter-spacing: -0.055em;
       }
-
       .section-description {
-        max-width: 380px;
-
-        font-size: 15px;
-
-        color: #686864;
+        max-width: 300px;
+        font-size: 13px;
+        color: var(--muted);
       }
-
-      /* =========================================================
-           KARTICE
-        ========================================================= */
-
+      /* 05. KARTICE — kopiranjem kartice nastaje novi element u mreži. */
       .items-grid {
         display: grid;
-
-        grid-template-columns: repeat(3, 1fr);
-
-        gap: 22px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
       }
-
       .item-card {
-        display: block;
-
-        background: #ebe9e3;
-
-        overflow: hidden;
-
+        min-width: 0;
+        padding: 9px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fcfcf8;
         transition:
-          transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
-          box-shadow 0.4s ease;
+          transform 0.25s,
+          box-shadow 0.25s,
+          border-color 0.25s;
       }
-
-      .item-card:hover {
-        transform: translateY(-7px);
-
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1);
+      .item-card:hover,
+      .item-card:focus-visible {
+        transform: translateY(-5px);
+        border-color: #9aa789;
+        box-shadow: 0 16px 34px #26351c0d;
       }
-
-      /* =========================================================
-           VIZUAL KARTICE
-        ========================================================= */
-
-      .card-image {
-        position: relative;
-
-        height: 410px;
-
+      .card-visual {
+        height: 205px;
         overflow: hidden;
-
-        background: #d5d2ca;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        padding: 18px;
+        border-radius: 14px;
+        background: var(--tile);
+        color: var(--tile-ink);
       }
-
-      .card-image::after {
+      .card-tag {
+        padding: 4px 9px;
+        border: 1px solid currentColor;
+        border-radius: 20px;
+        font:
+          10px/1.5 Consolas,
+          monospace;
+        z-index: 1;
+      }
+      .card-code {
+        align-self: end;
+        font:
+          500 76px/1 Consolas,
+          monospace;
+        letter-spacing: -0.08em;
+        position: relative;
+        z-index: 1;
+      }
+      .card-visual::before {
         content: "";
-
+        width: 195px;
+        height: 195px;
+        border: 1px solid currentColor;
+        border-radius: 50%;
         position: absolute;
-        inset: 0;
-
-        background: linear-gradient(
-          to bottom,
-          transparent 60%,
-          rgba(0, 0, 0, 0.05)
-        );
+        left: -34px;
+        bottom: -79px;
+        opacity: 0.26;
+        box-shadow:
+          0 0 0 20px var(--tile),
+          0 0 0 21px currentColor,
+          0 0 0 42px var(--tile),
+          0 0 0 43px currentColor;
       }
-
-      /* =========================================================
-           APSTRAKTNI VIZUALI - LV
-        ========================================================= */
-
-      .visual-lv-1 {
-        background:
-          radial-gradient(circle at 60% 40%, #e8e5dd 0 14%, transparent 15%),
-          linear-gradient(145deg, #c6c2b7, #e2dfd7);
+      .item-card:nth-child(3n + 2) .card-visual::before {
+        border-radius: 22px;
+        transform: rotate(-30deg);
+        left: -15px;
+        bottom: -100px;
       }
-
-      .visual-lv-2 {
-        background:
-          linear-gradient(
-            45deg,
-            transparent 45%,
-            rgba(255, 255, 255, 0.5) 46% 54%,
-            transparent 55%
-          ),
-          #aca99f;
+      .item-card:nth-child(3n) .card-visual::before {
+        width: 230px;
+        height: 230px;
+        left: -65px;
+        bottom: -120px;
       }
-
-      .visual-lv-3 {
-        background: radial-gradient(
-          circle at center,
-          #f2f0eb 0 20%,
-          #cbc8bf 21% 40%,
-          #aaa79f 41%
-        );
-      }
-
-      /* =========================================================
-           APSTRAKTNI VIZUALI - ZADAĆE
-        ========================================================= */
-
-      .visual-zadaca-1 {
-        background: linear-gradient(135deg, #e2ddd0 50%, #bfb9aa 50%);
-      }
-
-      .visual-zadaca-2 {
-        background: repeating-linear-gradient(
-          90deg,
-          #cac6bc 0 30px,
-          #e6e3dc 30px 60px
-        );
-      }
-
-      .visual-zadaca-3 {
-        background:
-          radial-gradient(circle at 30% 30%, #faf8f3 0 8%, transparent 9%),
-          radial-gradient(circle at 70% 70%, #aaa69d 0 13%, transparent 14%),
-          #d7d3c8;
-      }
-
-      /* =========================================================
-           APSTRAKTNI VIZUALI - PROJEKTI
-        ========================================================= */
-
-      .visual-projekt-1 {
-        background:
-          radial-gradient(circle at 20% 80%, #86847e 0 20%, transparent 21%),
-          #d8d5cd;
-      }
-
-      .visual-projekt-2 {
-        background: linear-gradient(
-          25deg,
-          #98958d 0 35%,
-          #dcd9d0 35% 70%,
-          #bbb7ad 70%
-        );
-      }
-
-      .visual-projekt-3 {
-        background:
-          radial-gradient(
-            ellipse at center,
-            transparent 0 20%,
-            #aba89f 21% 22%,
-            transparent 23% 35%,
-            #aaa79e 36% 37%,
-            transparent 38%
-          ),
-          #e2dfd7;
-      }
-
-      /* =========================================================
-           SADRŽAJ KARTICE
-        ========================================================= */
-
       .card-content {
-        padding: 25px 25px 30px;
+        padding: 20px 12px 15px;
       }
-
       .card-top {
         display: flex;
         align-items: center;
         justify-content: space-between;
-
-        gap: 20px;
+        gap: 15px;
       }
-
       .card-category {
-        margin-bottom: 7px;
-
         font-size: 11px;
-
-        text-transform: uppercase;
-
-        letter-spacing: 1.4px;
-
-        color: #77736c;
+        color: var(--muted);
+        margin-bottom: 4px;
       }
-
       .card-title {
         font-size: 23px;
-
-        font-weight: 500;
-
-        letter-spacing: -0.7px;
+        font-weight: 550;
+        letter-spacing: -0.045em;
+        overflow-wrap: anywhere;
       }
-
       .card-arrow {
-        width: 42px;
-        height: 42px;
-
-        flex-shrink: 0;
-
-        border: 1px solid rgba(0, 0, 0, 0.15);
-
+        display: grid;
+        place-items: center;
+        width: 37px;
+        height: 37px;
+        flex: 0 0 auto;
+        border: 1px solid var(--line);
         border-radius: 50%;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        font-size: 20px;
-
         transition:
-          background 0.3s ease,
-          color 0.3s ease,
-          transform 0.3s ease;
+          background 0.2s,
+          transform 0.2s;
       }
-
-      .item-card:hover .card-arrow {
-        background: #181818;
-        color: white;
-
-        transform: rotate(-45deg);
+      .item-card:hover .card-arrow,
+      .item-card:focus-visible .card-arrow {
+        background: var(--accent);
+        border-color: var(--accent);
+        transform: rotate(45deg);
       }
-
       .card-text {
-        margin-top: 18px;
-
-        color: #6b6861;
-
-        font-size: 14px;
-      }
-
-      /* =========================================================
-           VELIKA ISTAKNUTA KARTICA
-        ========================================================= */
-
-      .featured {
-        grid-column: span 2;
-      }
-
-      /* =========================================================
-           CTA
-        ========================================================= */
-
-      .cta {
-        margin: 40px 0 120px;
-
-        min-height: 430px;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-        padding: 60px;
-
-        background: #181818;
-
-        color: white;
-      }
-
-      .cta-small {
-        font-size: 12px;
-
-        text-transform: uppercase;
-
-        letter-spacing: 2px;
-
-        opacity: 0.6;
-      }
-
-      .cta h2 {
-        max-width: 850px;
-
-        font-size: clamp(45px, 6vw, 80px);
-
-        line-height: 0.98;
-
-        letter-spacing: -4px;
-
-        font-weight: 400;
-      }
-
-      .cta-bottom {
-        display: flex;
-
-        justify-content: space-between;
-        align-items: flex-end;
-
-        gap: 30px;
-      }
-
-      .cta p {
-        max-width: 500px;
-
-        color: rgba(255, 255, 255, 0.65);
-      }
-
-      .cta-button {
-        display: inline-flex;
-
-        align-items: center;
-        justify-content: center;
-
-        min-width: 170px;
-
-        height: 55px;
-
-        padding: 0 25px;
-
-        background: white;
-
-        color: black;
-
-        font-size: 14px;
-
-        transition: 0.3s ease;
-      }
-
-      .cta-button:hover {
-        background: #dddcd7;
-      }
-
-      /* =========================================================
-           FOOTER
-        ========================================================= */
-
-      footer {
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
-
-        padding: 40px 0;
-      }
-
-      .footer-container {
-        width: min(1400px, calc(100% - 60px));
-
-        margin: 0 auto;
-
-        display: flex;
-        justify-content: space-between;
-
-        color: #75716b;
-
         font-size: 13px;
+        color: var(--muted);
+        margin-top: 13px;
+        overflow-wrap: anywhere;
       }
-
-      /* =========================================================
-           RESPONSIVE - TABLET
-        ========================================================= */
-
+      /* 06. ZAVRŠNI BLOK */
+      .closing {
+        position: relative;
+        overflow: hidden;
+        margin: 88px 0 46px;
+        padding: 40px;
+        border-radius: 25px;
+        background: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+      .closing .eyebrow {
+        display: block;
+        margin-bottom: 16px;
+      }
+      .closing h2 {
+        font-size: clamp(32px, 4vw, 50px);
+      }
+      .closing > a {
+        display: grid;
+        place-items: center;
+        width: 65px;
+        height: 65px;
+        flex-shrink: 0;
+        border: 1px solid #718346;
+        border-radius: 50%;
+        font-size: 28px;
+        transition: background 0.2s;
+      }
+      .closing > a:hover {
+        background: #fff8;
+      }
+      footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 30px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      /* 07. TABLET I MOBITEL */
       @media (max-width: 1000px) {
+        .wrap {
+          width: calc(100% - 48px);
+        }
+        .hero-layout {
+          gap: 30px;
+        }
+        .hero-art {
+          min-height: 350px;
+        }
+        .orbit {
+          width: 280px;
+          height: 280px;
+        }
         .items-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .featured {
-          grid-column: auto;
-        }
-
-        .hero {
-          min-height: 520px;
-
-          padding: 55px;
-        }
-
-        .section-header {
-          flex-direction: column;
-          align-items: flex-start;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
-
-      /* =========================================================
-           RESPONSIVE - MOBITEL
-        ========================================================= */
-
-      @media (max-width: 700px) {
-        .navbar {
+      @media (max-width: 650px) {
+        html {
+          scroll-padding-top: 140px;
+        }
+        .wrap {
           width: calc(100% - 32px);
-
-          height: 70px;
         }
-
-        .nav-links {
-          gap: 15px;
+        .navbar {
+          min-height: 76px;
+          gap: 8px;
+          flex-wrap: wrap;
+          padding-block: 12px;
         }
-
-        .nav-links a {
+        .logo {
+          font-size: 14px;
+          gap: 7px;
+        }
+        .logo-mark {
+          width: 29px;
+          height: 29px;
           font-size: 12px;
         }
-
-        .logo {
-          font-size: 19px;
+        nav ul {
+          gap: 1px;
         }
-
-        .hero,
-        main {
-          width: calc(100% - 32px);
+        nav li a {
+          font-size: 12px;
+          padding: 10px 11px;
         }
-
         .hero {
-          margin-top: 16px;
-
-          min-height: 500px;
-
-          padding: 35px 25px;
+          padding-top: 32px;
         }
-
-        .hero h1 {
-          letter-spacing: -3px;
+        .hero-meta {
+          align-items: start;
         }
-
+        .hero-meta .eyebrow {
+          font-size: 9px;
+          max-width: 160px;
+        }
+        .hero-layout {
+          grid-template-columns: 1fr;
+          padding-top: 32px;
+        }
+        h1 {
+          font-size: clamp(62px, 16vw, 95px);
+        }
+        .hero-copy > p {
+          font-size: 15px;
+        }
+        .hero-art {
+          min-height: 300px;
+        }
+        .monogram {
+          font-size: 125px;
+        }
+        .hero-bottom {
+          align-items: start;
+        }
+        .hero-bottom .eyebrow {
+          max-width: 160px;
+          font-size: 9px;
+        }
+        .hero-bottom span:last-child {
+          font-size: 10px;
+        }
         .work-section {
-          padding: 90px 0;
+          padding-top: 52px;
         }
-
-        .section-header h2 {
-          letter-spacing: -2px;
+        .section-header {
+          align-items: start;
+          flex-direction: column;
+          gap: 14px;
         }
-
         .items-grid {
           grid-template-columns: 1fr;
+          gap: 16px;
         }
-
-        .card-image {
-          height: 330px;
+        .card-visual {
+          height: 200px;
         }
-
-        .cta {
-          padding: 35px 25px;
-
-          min-height: 450px;
+        .closing {
+          margin-top: 55px;
+          padding: 25px;
         }
-
-        .cta h2 {
-          letter-spacing: -2px;
+        .closing > a {
+          width: 46px;
+          height: 46px;
         }
-
-        .cta-bottom {
-          flex-direction: column;
-          align-items: flex-start;
+        footer {
+          flex-wrap: wrap;
         }
-
-        .footer-container {
-          width: calc(100% - 32px);
-
-          flex-direction: column;
-
-          gap: 10px;
+      }
+      /* Poštuje postavku korisnika za smanjeno kretanje. */
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+          transition: none !important;
+        }
+        .item-card:hover,
+        .item-card:focus-visible,
+        .button:hover {
+          transform: none;
         }
       }
     </style>
   </head>
-
-  <body>
-    <!-- =========================================================
-         NAVIGACIJA
-    ========================================================== -->
-
+  <body id="vrh">
+    <a class="skip" href="#sadrzaj">Preskoči na sadržaj</a>
     <header>
-      <nav class="navbar">
-        <a href="#" class="logo"> RADOVI. </a>
-
-        <ul class="nav-links">
+      <nav class="navbar wrap" aria-label="Glavna navigacija">
+        <a class="logo" href="#vrh"
+          ><span class="logo-mark" aria-hidden="true">bg.</span> RADOVI.</a
+        >
+        <ul>
+          <li><a href="#lv">LV</a></li>
+          <li><a href="#zadace">Zadaće</a></li>
           <li>
-            <a href="#lv">LV</a>
-          </li>
-
-          <li>
-            <a href="#zadace">Zadaće</a>
-          </li>
-
-          <li>
-            <a href="#projekti">Projekti</a>
+            <a href="#projekti">Projekti <span aria-hidden="true">↗</span></a>
           </li>
         </ul>
       </nav>
     </header>
+    <main class="wrap" id="sadrzaj">
+      <section class="hero" aria-labelledby="ime">
+        <div class="hero-meta">
+          <span class="eyebrow status">Osobni portfolio</span>
+          <span class="eyebrow">Tehničar za računalstvo</span>
+        </div>
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <!-- OVDJE MIJENJAŠ IME I UVODNI OPIS. -->
+            <h1 id="ime">Bruno<span>Gajger.</span></h1>
+            <p>
+              Od prve ideje do gotovog rješenja. Moje laboratorijske vježbe,
+              zadaće i projekti na jednom mjestu.
+            </p>
+            <a class="button" href="#lv"
+              >Istraži radove <span aria-hidden="true">↘</span></a
+            >
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="art-top">
+              <span class="eyebrow">Ideja. Kod. Rezultat.</span
+              ><span class="art-symbol">↗</span>
+            </div>
+            <div class="orbit"></div>
+            <div class="monogram">&lt;/&gt;</div>
+            <span class="art-star">✳</span>
+            <div class="art-bottom">
+              <span>BRUNO GAJGER</span><span>PORTFOLIO — 2026</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-bottom">
+          <span class="eyebrow">Mali koraci. Konkretni rezultati.</span
+          ><span>Vježbe / Zadaće / Projekti</span>
+        </div>
+      </section>
 
-    <!-- =========================================================
-         HERO
-    ========================================================== -->
-
-    <section class="hero">
-      <div class="hero-content">
-        <span class="hero-label"> Tehničar za računalstvo </span>
-
-        <h1>Bruno Gajger</h1>
-
-        <p>
-          Laboratorijske vježbe, zadaće i projekti objedinjeni na jednom mjestu.
-        </p>
-      </div>
-    </section>
-
-    <main>
-      <!-- =====================================================
-             LV
-        ====================================================== -->
-
-      <section class="work-section" id="lv">
+      <!-- SEKCIJA: LV -->
+      <section class="work-section" id="lv" aria-labelledby="naslov-lv">
         <div class="section-header">
           <div>
-            <span class="section-number"> 01 / LABORATORIJSKE VJEŽBE </span>
-
-            <h2>LV</h2>
+            <span class="section-number eyebrow"
+              >01 / LABORATORIJSKE VJEŽBE</span
+            >
+            <h2 id="naslov-lv">LV</h2>
           </div>
-
           <p class="section-description">
             Pregled laboratorijskih vježbi i praktičnih zadataka.
           </p>
         </div>
-
         <div class="items-grid">
-          <!--
-                    PROMIJENI href="lv1.html"
-                    u naziv HTML datoteke koju želiš otvoriti.
-                -->
-
-          <a href="lv1.html" class="item-card featured">
-            <div class="card-image visual-lv-1"></div>
-
+          <!-- POČETAK KARTICE: LV 01. Kopiraj cijeli <a> ... </a>. -->
+          <a href="lv1.html" class="item-card">
+            <div class="card-visual" aria-hidden="true">
+              <span class="card-tag">LV / 01</span>
+              <span class="card-code">01</span>
+            </div>
             <div class="card-content">
               <div class="card-top">
                 <div>
-                  <div class="card-category">Laboratorijska vježba</div>
-
+                  <p class="card-category">Laboratorijska vježba</p>
                   <h3 class="card-title">LV 01</h3>
                 </div>
-
-                <div class="card-arrow">→</div>
+                <span class="card-arrow" aria-hidden="true">↗</span>
               </div>
-
               <p class="card-text">Kratki opis prve laboratorijske vježbe.</p>
             </div>
           </a>
+          <!-- KRAJ KARTICE -->
 
+          <!-- POČETAK KARTICE: LV 02. Kopiraj cijeli <a> ... </a>. -->
           <a href="lv2.html" class="item-card">
-            <div class="card-image visual-lv-2"></div>
-
+            <div class="card-visual" aria-hidden="true">
+              <span class="card-tag">LV / 02</span>
+              <span class="card-code">02</span>
+            </div>
             <div class="card-content">
               <div class="card-top">
                 <div>
-                  <div class="card-category">Laboratorijska vježba</div>
-
+                  <p class="card-category">Laboratorijska vježba</p>
                   <h3 class="card-title">LV 02</h3>
                 </div>
-
-                <div class="card-arrow">→</div>
+                <span class="card-arrow" aria-hidden="true">↗</span>
               </div>
-
               <p class="card-text">Kratki opis druge laboratorijske vježbe.</p>
             </div>
           </a>
+          <!-- KRAJ KARTICE -->
 
+          <!-- POČETAK KARTICE: LV 03. Kopiraj cijeli <a> ... </a>. -->
           <a href="lv3.html" class="item-card">
-            <div class="card-image visual-lv-3"></div>
-
+            <div class="card-visual" aria-hidden="true">
+              <span class="card-tag">LV / 03</span>
+              <span class="card-code">03</span>
+            </div>
             <div class="card-content">
               <div class="card-top">
                 <div>
-                  <div class="card-category">Laboratorijska vježba</div>
-
+                  <p class="card-category">Laboratorijska vježba</p>
                   <h3 class="card-title">LV 03</h3>
                 </div>
-
-                <div class="card-arrow">→</div>
+                <span class="card-arrow" aria-hidden="true">↗</span>
               </div>
-
               <p class="card-text">Kratki opis treće laboratorijske vježbe.</p>
             </div>
           </a>
+          <!-- KRAJ KARTICE -->
+
+          <!-- DODAJ NOVU KARTICU: LV — zalijepi je IZNAD ovog komentara. -->
         </div>
       </section>
 
-      <!-- =====================================================
-             ZADAĆE
-        ====================================================== -->
-
-      <section class="work-section" id="zadace">
+      <!-- SEKCIJA: ZADAĆE -->
+      <section class="work-section" id="zadace" aria-labelledby="naslov-zadace">
         <div class="section-header">
           <div>
-            <span class="section-number"> 02 / ZADAĆE </span>
-
-            <h2>Zadaće</h2>
+            <span class="section-number eyebrow">02 / ZADAĆE</span>
+            <h2 id="naslov-zadace">Zadaće</h2>
           </div>
-
           <p class="section-description">
             Domaće zadaće, samostalni zadaci i rješenja.
           </p>
         </div>
-
         <div class="items-grid">
+          <!-- POČETAK KARTICE: Zadaća 01. Kopiraj cijeli <a> ... </a>. -->
           <a href="zadaca1.html" class="item-card">
-            <div class="card-image visual-zadaca-1"></div>
-
+            <div class="card-visual" aria-hidden="true">
+              <span class="card-tag">ZADAĆE / 01</span>
+              <span class="card-code">01</span>
+            </div>
             <div class="card-content">
               <div class="card-top">
                 <div>
-                  <div class="card-category">Zadaća</div>
-
+                  <p class="card-category">Zadaća</p>
                   <h3 class="card-title">Zadaća 01</h3>
                 </div>
-
-                <div class="card-arrow">→</div>
+                <span class="card-arrow" aria-hidden="true">↗</span>
               </div>
-
               <p class="card-text">Kratki opis prve zadaće.</p>
             </div>
           </a>
+          <!-- KRAJ KARTICE -->
 
+          <!-- POČETAK KARTICE: Zadaća 02. Kopiraj cijeli <a> ... </a>. -->
           <a href="zadaca2.html" class="item-card">
-            <div class="card-image visual-zadaca-2"></div>
-
+            <div class="card-visual" aria-hidden="true">
+              <span class="card-tag">ZADAĆE / 02</span>
+              <span class="card-code">02</span>
+            </div>
             <div class="card-content">
               <div class="card-top">
                 <div>
-                  <div class="card-category">Zadaća</div>
-
+                  <p class="card-category">Zadaća</p>
                   <h3 class="card-title">Zadaća 02</h3>
                 </div>
-
-                <div class="card-arrow">→</div>
+                <span class="card-arrow" aria-hidden="true">↗</span>
               </div>
-
               <p class="card-text">Kratki opis druge zadaće.</p>
             </div>
           </a>
+          <!-- KRAJ KARTICE -->
 
+          <!-- POČETAK KARTICE: Zadaća 03. Kopiraj cijeli <a> ... </a>. -->
           <a href="zadaca3.html" class="item-card">
-            <div class="card-image visual-zadaca-3"></div>
-
+            <div class="card-visual" aria-hidden="true">
+              <span class="card-tag">ZADAĆE / 03</span>
+              <span class="card-code">03</span>
+            </div>
             <div class="card-content">
               <div class="card-top">
                 <div>
-                  <div class="card-category">Zadaća</div>
-
+                  <p class="card-category">Zadaća</p>
                   <h3 class="card-title">Zadaća 03</h3>
                 </div>
-
-                <div class="card-arrow">→</div>
+                <span class="card-arrow" aria-hidden="true">↗</span>
               </div>
-
               <p class="card-text">Kratki opis treće zadaće.</p>
             </div>
           </a>
+          <!-- KRAJ KARTICE -->
+
+          <!-- DODAJ NOVU KARTICU: ZADAĆE — zalijepi je IZNAD ovog komentara. -->
         </div>
       </section>
 
-      <!-- =====================================================
-             PROJEKTI
-        ====================================================== -->
-
-      <section class="work-section" id="projekti">
+      <!-- SEKCIJA: PROJEKTI -->
+      <section
+        class="work-section"
+        id="projekti"
+        aria-labelledby="naslov-projekti"
+      >
         <div class="section-header">
           <div>
-            <span class="section-number"> 03 / PROJEKTI </span>
-
-            <h2>Projekti</h2>
+            <span class="section-number eyebrow">03 / PROJEKTI</span>
+            <h2 id="naslov-projekti">Projekti</h2>
           </div>
-
           <p class="section-description">
             Veći praktični projekti izrađeni tijekom školske godine.
           </p>
         </div>
-
         <div class="items-grid">
-          <a href="projekt1.html" class="item-card featured">
-            <div class="card-image visual-projekt-1"></div>
-
+          <!-- POČETAK KARTICE: Projekt 01. Kopiraj cijeli <a> ... </a>. -->
+          <a href="projekt1.html" class="item-card">
+            <div class="card-visual" aria-hidden="true">
+              <span class="card-tag">PROJEKTI / 01</span>
+              <span class="card-code">01</span>
+            </div>
             <div class="card-content">
               <div class="card-top">
                 <div>
-                  <div class="card-category">Projekt</div>
-
+                  <p class="card-category">Projekt</p>
                   <h3 class="card-title">Projekt 01</h3>
                 </div>
-
-                <div class="card-arrow">→</div>
+                <span class="card-arrow" aria-hidden="true">↗</span>
               </div>
-
               <p class="card-text">Opis prvog većeg projekta.</p>
             </div>
           </a>
+          <!-- KRAJ KARTICE -->
 
+          <!-- POČETAK KARTICE: Projekt 02. Kopiraj cijeli <a> ... </a>. -->
           <a href="projekt2.html" class="item-card">
-            <div class="card-image visual-projekt-2"></div>
-
+            <div class="card-visual" aria-hidden="true">
+              <span class="card-tag">PROJEKTI / 02</span>
+              <span class="card-code">02</span>
+            </div>
             <div class="card-content">
               <div class="card-top">
                 <div>
-                  <div class="card-category">Projekt</div>
-
+                  <p class="card-category">Projekt</p>
                   <h3 class="card-title">Projekt 02</h3>
                 </div>
-
-                <div class="card-arrow">→</div>
+                <span class="card-arrow" aria-hidden="true">↗</span>
               </div>
-
               <p class="card-text">Opis drugog projekta.</p>
             </div>
           </a>
+          <!-- KRAJ KARTICE -->
 
+          <!-- POČETAK KARTICE: Projekt 03. Kopiraj cijeli <a> ... </a>. -->
           <a href="projekt3.html" class="item-card">
-            <div class="card-image visual-projekt-3"></div>
-
+            <div class="card-visual" aria-hidden="true">
+              <span class="card-tag">PROJEKTI / 03</span>
+              <span class="card-code">03</span>
+            </div>
             <div class="card-content">
               <div class="card-top">
                 <div>
-                  <div class="card-category">Projekt</div>
-
+                  <p class="card-category">Projekt</p>
                   <h3 class="card-title">Projekt 03</h3>
                 </div>
-
-                <div class="card-arrow">→</div>
+                <span class="card-arrow" aria-hidden="true">↗</span>
               </div>
-
               <p class="card-text">Opis trećeg projekta.</p>
             </div>
           </a>
+          <!-- KRAJ KARTICE -->
+
+          <!-- DODAJ NOVU KARTICU: PROJEKTI — zalijepi je IZNAD ovog komentara. -->
         </div>
       </section>
 
-      <!-- =====================================================
-             ZAVRŠNI BLOK
-        ====================================================== -->
-
-      <section class="cta">
-        <span class="cta-small"> Portfolio / 2026 </span>
-
-        <h2>
-          Učenje kroz<br />
-          praktičan rad.
-        </h2>
-
-        <div class="cta-bottom">
-          <p>
-            Ovdje se nalaze laboratorijske vježbe, zadaće i projekti izrađeni
-            tijekom nastave.
-          </p>
-
-          <a href="#lv" class="cta-button"> Pogledaj radove ↑ </a>
+      <section class="closing" aria-labelledby="zavrsni-naslov">
+        <div>
+          <span class="eyebrow">Znanje u praksi</span>
+          <h2 id="zavrsni-naslov">Svaki rad.<br />Korak naprijed.</h2>
         </div>
+        <a href="#vrh" aria-label="Povratak na vrh stranice">↑</a>
       </section>
+      <footer>
+        <span>© 2026 Bruno Gajger</span><span>Učenje kroz praktičan rad.</span>
+      </footer>
     </main>
-
-    <!-- =========================================================
-         FOOTER
-    ========================================================== -->
-
-    <footer>
-      <div class="footer-container">
-        <span> © 2026 Moji radovi </span>
-
-        <span> Tehničar za računalstvo </span>
-      </div>
-    </footer>
-  </body>
+    <!--
+  KAKO DODATI NOVI RAD:
+  1. Pronađi komentar DODAJ NOVU KARTICU u željenoj sekciji.
+  2. Kopiraj postojeći blok od <a href="..." class="item-card"> do njegovog </a>.
+  3. Zalijepi blok prije komentara, UNUTAR pripadajućeg div.items-grid.
+  4. Promijeni href, oznaku card-tag, broj card-code, kategoriju, naslov i opis.
+  5. Izradi HTML datoteku na koju href vodi. Naziv i velika/mala slova moraju odgovarati.
+     href="lv4.html"         = datoteka u istoj mapi kao ova stranica.
+     href="lv/lv4.html"      = datoteka lv4.html u podmapi lv.
+     href="../lv4.html"      = datoteka u nadređenoj mapi.
+  Ne mijenjaj CSS pri dodavanju kartica. Boja ovisi o sekciji, a uzorak o redoslijedu.
+  Postojeće poveznice na radove su primjeri; pripadajuće datoteke dodaješ sam.
+  --></body>
 </html>
