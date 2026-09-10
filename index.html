@@ -1,0 +1,1003 @@
+<!doctype html>
+<html lang="hr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Moji radovi</title>
+
+    <style>
+      /* =========================================================
+           OSNOVNE POSTAVKE
+        ========================================================= */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f5f4f0;
+        color: #181818;
+        line-height: 1.5;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        width: 100%;
+        display: block;
+      }
+
+      /* =========================================================
+           NAVIGACIJA
+        ========================================================= */
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
+        background: rgba(245, 244, 240, 0.92);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      }
+
+      .navbar {
+        width: min(1400px, calc(100% - 60px));
+        height: 84px;
+
+        margin: 0 auto;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: -1px;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 38px;
+
+        list-style: none;
+      }
+
+      .nav-links a {
+        position: relative;
+
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .nav-links a::after {
+        content: "";
+
+        position: absolute;
+        left: 0;
+        bottom: -7px;
+
+        width: 0;
+        height: 1px;
+
+        background: #181818;
+
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      /* =========================================================
+           HERO
+        ========================================================= */
+
+      .hero {
+        width: min(1400px, calc(100% - 60px));
+
+        min-height: 620px;
+
+        margin: 32px auto 0;
+
+        padding: 80px;
+
+        display: flex;
+        align-items: flex-end;
+
+        border-radius: 4px;
+
+        background:
+          radial-gradient(
+            circle at 75% 30%,
+            rgba(255, 255, 255, 0.7),
+            transparent 30%
+          ),
+          linear-gradient(135deg, #d8d4c9, #b7b1a1);
+
+        overflow: hidden;
+        position: relative;
+      }
+
+      .hero::before {
+        content: "";
+
+        position: absolute;
+
+        width: 420px;
+        height: 420px;
+
+        top: -100px;
+        right: -70px;
+
+        border-radius: 50%;
+
+        background: rgba(255, 255, 255, 0.22);
+      }
+
+      .hero::after {
+        content: "";
+
+        position: absolute;
+
+        width: 230px;
+        height: 230px;
+
+        right: 240px;
+        bottom: -100px;
+
+        border-radius: 50%;
+
+        border: 1px solid rgba(255, 255, 255, 0.5);
+      }
+
+      .hero-content {
+        max-width: 800px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-label {
+        display: inline-block;
+
+        margin-bottom: 20px;
+
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 600;
+      }
+
+      .hero h1 {
+        font-size: clamp(52px, 8vw, 108px);
+
+        font-weight: 500;
+
+        letter-spacing: -6px;
+        line-height: 0.9;
+
+        margin-bottom: 30px;
+      }
+
+      .hero p {
+        max-width: 560px;
+
+        font-size: 18px;
+
+        color: rgba(0, 0, 0, 0.68);
+      }
+
+      /* =========================================================
+           GLAVNI SADRŽAJ
+        ========================================================= */
+
+      main {
+        width: min(1400px, calc(100% - 60px));
+        margin: 0 auto;
+      }
+
+      /* =========================================================
+           SEKCIJE
+        ========================================================= */
+
+      .work-section {
+        padding: 130px 0;
+      }
+
+      .work-section + .work-section {
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        gap: 40px;
+
+        margin-bottom: 55px;
+      }
+
+      .section-number {
+        display: block;
+
+        margin-bottom: 12px;
+
+        font-size: 12px;
+        letter-spacing: 2px;
+
+        color: #7d7d78;
+      }
+
+      .section-header h2 {
+        font-size: clamp(45px, 6vw, 78px);
+        font-weight: 500;
+
+        letter-spacing: -4px;
+        line-height: 1;
+      }
+
+      .section-description {
+        max-width: 380px;
+
+        font-size: 15px;
+
+        color: #686864;
+      }
+
+      /* =========================================================
+           KARTICE
+        ========================================================= */
+
+      .items-grid {
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 22px;
+      }
+
+      .item-card {
+        display: block;
+
+        background: #ebe9e3;
+
+        overflow: hidden;
+
+        transition:
+          transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+          box-shadow 0.4s ease;
+      }
+
+      .item-card:hover {
+        transform: translateY(-7px);
+
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1);
+      }
+
+      /* =========================================================
+           VIZUAL KARTICE
+        ========================================================= */
+
+      .card-image {
+        position: relative;
+
+        height: 410px;
+
+        overflow: hidden;
+
+        background: #d5d2ca;
+      }
+
+      .card-image::after {
+        content: "";
+
+        position: absolute;
+        inset: 0;
+
+        background: linear-gradient(
+          to bottom,
+          transparent 60%,
+          rgba(0, 0, 0, 0.05)
+        );
+      }
+
+      /* =========================================================
+           APSTRAKTNI VIZUALI - LV
+        ========================================================= */
+
+      .visual-lv-1 {
+        background:
+          radial-gradient(circle at 60% 40%, #e8e5dd 0 14%, transparent 15%),
+          linear-gradient(145deg, #c6c2b7, #e2dfd7);
+      }
+
+      .visual-lv-2 {
+        background:
+          linear-gradient(
+            45deg,
+            transparent 45%,
+            rgba(255, 255, 255, 0.5) 46% 54%,
+            transparent 55%
+          ),
+          #aca99f;
+      }
+
+      .visual-lv-3 {
+        background: radial-gradient(
+          circle at center,
+          #f2f0eb 0 20%,
+          #cbc8bf 21% 40%,
+          #aaa79f 41%
+        );
+      }
+
+      /* =========================================================
+           APSTRAKTNI VIZUALI - ZADAĆE
+        ========================================================= */
+
+      .visual-zadaca-1 {
+        background: linear-gradient(135deg, #e2ddd0 50%, #bfb9aa 50%);
+      }
+
+      .visual-zadaca-2 {
+        background: repeating-linear-gradient(
+          90deg,
+          #cac6bc 0 30px,
+          #e6e3dc 30px 60px
+        );
+      }
+
+      .visual-zadaca-3 {
+        background:
+          radial-gradient(circle at 30% 30%, #faf8f3 0 8%, transparent 9%),
+          radial-gradient(circle at 70% 70%, #aaa69d 0 13%, transparent 14%),
+          #d7d3c8;
+      }
+
+      /* =========================================================
+           APSTRAKTNI VIZUALI - PROJEKTI
+        ========================================================= */
+
+      .visual-projekt-1 {
+        background:
+          radial-gradient(circle at 20% 80%, #86847e 0 20%, transparent 21%),
+          #d8d5cd;
+      }
+
+      .visual-projekt-2 {
+        background: linear-gradient(
+          25deg,
+          #98958d 0 35%,
+          #dcd9d0 35% 70%,
+          #bbb7ad 70%
+        );
+      }
+
+      .visual-projekt-3 {
+        background:
+          radial-gradient(
+            ellipse at center,
+            transparent 0 20%,
+            #aba89f 21% 22%,
+            transparent 23% 35%,
+            #aaa79e 36% 37%,
+            transparent 38%
+          ),
+          #e2dfd7;
+      }
+
+      /* =========================================================
+           SADRŽAJ KARTICE
+        ========================================================= */
+
+      .card-content {
+        padding: 25px 25px 30px;
+      }
+
+      .card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 20px;
+      }
+
+      .card-category {
+        margin-bottom: 7px;
+
+        font-size: 11px;
+
+        text-transform: uppercase;
+
+        letter-spacing: 1.4px;
+
+        color: #77736c;
+      }
+
+      .card-title {
+        font-size: 23px;
+
+        font-weight: 500;
+
+        letter-spacing: -0.7px;
+      }
+
+      .card-arrow {
+        width: 42px;
+        height: 42px;
+
+        flex-shrink: 0;
+
+        border: 1px solid rgba(0, 0, 0, 0.15);
+
+        border-radius: 50%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 20px;
+
+        transition:
+          background 0.3s ease,
+          color 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      .item-card:hover .card-arrow {
+        background: #181818;
+        color: white;
+
+        transform: rotate(-45deg);
+      }
+
+      .card-text {
+        margin-top: 18px;
+
+        color: #6b6861;
+
+        font-size: 14px;
+      }
+
+      /* =========================================================
+           VELIKA ISTAKNUTA KARTICA
+        ========================================================= */
+
+      .featured {
+        grid-column: span 2;
+      }
+
+      /* =========================================================
+           CTA
+        ========================================================= */
+
+      .cta {
+        margin: 40px 0 120px;
+
+        min-height: 430px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        padding: 60px;
+
+        background: #181818;
+
+        color: white;
+      }
+
+      .cta-small {
+        font-size: 12px;
+
+        text-transform: uppercase;
+
+        letter-spacing: 2px;
+
+        opacity: 0.6;
+      }
+
+      .cta h2 {
+        max-width: 850px;
+
+        font-size: clamp(45px, 6vw, 80px);
+
+        line-height: 0.98;
+
+        letter-spacing: -4px;
+
+        font-weight: 400;
+      }
+
+      .cta-bottom {
+        display: flex;
+
+        justify-content: space-between;
+        align-items: flex-end;
+
+        gap: 30px;
+      }
+
+      .cta p {
+        max-width: 500px;
+
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      .cta-button {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        min-width: 170px;
+
+        height: 55px;
+
+        padding: 0 25px;
+
+        background: white;
+
+        color: black;
+
+        font-size: 14px;
+
+        transition: 0.3s ease;
+      }
+
+      .cta-button:hover {
+        background: #dddcd7;
+      }
+
+      /* =========================================================
+           FOOTER
+        ========================================================= */
+
+      footer {
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+        padding: 40px 0;
+      }
+
+      .footer-container {
+        width: min(1400px, calc(100% - 60px));
+
+        margin: 0 auto;
+
+        display: flex;
+        justify-content: space-between;
+
+        color: #75716b;
+
+        font-size: 13px;
+      }
+
+      /* =========================================================
+           RESPONSIVE - TABLET
+        ========================================================= */
+
+      @media (max-width: 1000px) {
+        .items-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .featured {
+          grid-column: auto;
+        }
+
+        .hero {
+          min-height: 520px;
+
+          padding: 55px;
+        }
+
+        .section-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+
+      /* =========================================================
+           RESPONSIVE - MOBITEL
+        ========================================================= */
+
+      @media (max-width: 700px) {
+        .navbar {
+          width: calc(100% - 32px);
+
+          height: 70px;
+        }
+
+        .nav-links {
+          gap: 15px;
+        }
+
+        .nav-links a {
+          font-size: 12px;
+        }
+
+        .logo {
+          font-size: 19px;
+        }
+
+        .hero,
+        main {
+          width: calc(100% - 32px);
+        }
+
+        .hero {
+          margin-top: 16px;
+
+          min-height: 500px;
+
+          padding: 35px 25px;
+        }
+
+        .hero h1 {
+          letter-spacing: -3px;
+        }
+
+        .work-section {
+          padding: 90px 0;
+        }
+
+        .section-header h2 {
+          letter-spacing: -2px;
+        }
+
+        .items-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .card-image {
+          height: 330px;
+        }
+
+        .cta {
+          padding: 35px 25px;
+
+          min-height: 450px;
+        }
+
+        .cta h2 {
+          letter-spacing: -2px;
+        }
+
+        .cta-bottom {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .footer-container {
+          width: calc(100% - 32px);
+
+          flex-direction: column;
+
+          gap: 10px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- =========================================================
+         NAVIGACIJA
+    ========================================================== -->
+
+    <header>
+      <nav class="navbar">
+        <a href="#" class="logo"> RADOVI. </a>
+
+        <ul class="nav-links">
+          <li>
+            <a href="#lv">LV</a>
+          </li>
+
+          <li>
+            <a href="#zadace">Zadaće</a>
+          </li>
+
+          <li>
+            <a href="#projekti">Projekti</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- =========================================================
+         HERO
+    ========================================================== -->
+
+    <section class="hero">
+      <div class="hero-content">
+        <span class="hero-label"> Tehničar za računalstvo </span>
+
+        <h1>Bruno Gajger</h1>
+
+        <p>
+          Laboratorijske vježbe, zadaće i projekti objedinjeni na jednom mjestu.
+        </p>
+      </div>
+    </section>
+
+    <main>
+      <!-- =====================================================
+             LV
+        ====================================================== -->
+
+      <section class="work-section" id="lv">
+        <div class="section-header">
+          <div>
+            <span class="section-number"> 01 / LABORATORIJSKE VJEŽBE </span>
+
+            <h2>LV</h2>
+          </div>
+
+          <p class="section-description">
+            Pregled laboratorijskih vježbi i praktičnih zadataka.
+          </p>
+        </div>
+
+        <div class="items-grid">
+          <!--
+                    PROMIJENI href="lv1.html"
+                    u naziv HTML datoteke koju želiš otvoriti.
+                -->
+
+          <a href="lv1.html" class="item-card featured">
+            <div class="card-image visual-lv-1"></div>
+
+            <div class="card-content">
+              <div class="card-top">
+                <div>
+                  <div class="card-category">Laboratorijska vježba</div>
+
+                  <h3 class="card-title">LV 01</h3>
+                </div>
+
+                <div class="card-arrow">→</div>
+              </div>
+
+              <p class="card-text">Kratki opis prve laboratorijske vježbe.</p>
+            </div>
+          </a>
+
+          <a href="lv2.html" class="item-card">
+            <div class="card-image visual-lv-2"></div>
+
+            <div class="card-content">
+              <div class="card-top">
+                <div>
+                  <div class="card-category">Laboratorijska vježba</div>
+
+                  <h3 class="card-title">LV 02</h3>
+                </div>
+
+                <div class="card-arrow">→</div>
+              </div>
+
+              <p class="card-text">Kratki opis druge laboratorijske vježbe.</p>
+            </div>
+          </a>
+
+          <a href="lv3.html" class="item-card">
+            <div class="card-image visual-lv-3"></div>
+
+            <div class="card-content">
+              <div class="card-top">
+                <div>
+                  <div class="card-category">Laboratorijska vježba</div>
+
+                  <h3 class="card-title">LV 03</h3>
+                </div>
+
+                <div class="card-arrow">→</div>
+              </div>
+
+              <p class="card-text">Kratki opis treće laboratorijske vježbe.</p>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- =====================================================
+             ZADAĆE
+        ====================================================== -->
+
+      <section class="work-section" id="zadace">
+        <div class="section-header">
+          <div>
+            <span class="section-number"> 02 / ZADAĆE </span>
+
+            <h2>Zadaće</h2>
+          </div>
+
+          <p class="section-description">
+            Domaće zadaće, samostalni zadaci i rješenja.
+          </p>
+        </div>
+
+        <div class="items-grid">
+          <a href="zadaca1.html" class="item-card">
+            <div class="card-image visual-zadaca-1"></div>
+
+            <div class="card-content">
+              <div class="card-top">
+                <div>
+                  <div class="card-category">Zadaća</div>
+
+                  <h3 class="card-title">Zadaća 01</h3>
+                </div>
+
+                <div class="card-arrow">→</div>
+              </div>
+
+              <p class="card-text">Kratki opis prve zadaće.</p>
+            </div>
+          </a>
+
+          <a href="zadaca2.html" class="item-card">
+            <div class="card-image visual-zadaca-2"></div>
+
+            <div class="card-content">
+              <div class="card-top">
+                <div>
+                  <div class="card-category">Zadaća</div>
+
+                  <h3 class="card-title">Zadaća 02</h3>
+                </div>
+
+                <div class="card-arrow">→</div>
+              </div>
+
+              <p class="card-text">Kratki opis druge zadaće.</p>
+            </div>
+          </a>
+
+          <a href="zadaca3.html" class="item-card">
+            <div class="card-image visual-zadaca-3"></div>
+
+            <div class="card-content">
+              <div class="card-top">
+                <div>
+                  <div class="card-category">Zadaća</div>
+
+                  <h3 class="card-title">Zadaća 03</h3>
+                </div>
+
+                <div class="card-arrow">→</div>
+              </div>
+
+              <p class="card-text">Kratki opis treće zadaće.</p>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- =====================================================
+             PROJEKTI
+        ====================================================== -->
+
+      <section class="work-section" id="projekti">
+        <div class="section-header">
+          <div>
+            <span class="section-number"> 03 / PROJEKTI </span>
+
+            <h2>Projekti</h2>
+          </div>
+
+          <p class="section-description">
+            Veći praktični projekti izrađeni tijekom školske godine.
+          </p>
+        </div>
+
+        <div class="items-grid">
+          <a href="projekt1.html" class="item-card featured">
+            <div class="card-image visual-projekt-1"></div>
+
+            <div class="card-content">
+              <div class="card-top">
+                <div>
+                  <div class="card-category">Projekt</div>
+
+                  <h3 class="card-title">Projekt 01</h3>
+                </div>
+
+                <div class="card-arrow">→</div>
+              </div>
+
+              <p class="card-text">Opis prvog većeg projekta.</p>
+            </div>
+          </a>
+
+          <a href="projekt2.html" class="item-card">
+            <div class="card-image visual-projekt-2"></div>
+
+            <div class="card-content">
+              <div class="card-top">
+                <div>
+                  <div class="card-category">Projekt</div>
+
+                  <h3 class="card-title">Projekt 02</h3>
+                </div>
+
+                <div class="card-arrow">→</div>
+              </div>
+
+              <p class="card-text">Opis drugog projekta.</p>
+            </div>
+          </a>
+
+          <a href="projekt3.html" class="item-card">
+            <div class="card-image visual-projekt-3"></div>
+
+            <div class="card-content">
+              <div class="card-top">
+                <div>
+                  <div class="card-category">Projekt</div>
+
+                  <h3 class="card-title">Projekt 03</h3>
+                </div>
+
+                <div class="card-arrow">→</div>
+              </div>
+
+              <p class="card-text">Opis trećeg projekta.</p>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- =====================================================
+             ZAVRŠNI BLOK
+        ====================================================== -->
+
+      <section class="cta">
+        <span class="cta-small"> Portfolio / 2026 </span>
+
+        <h2>
+          Učenje kroz<br />
+          praktičan rad.
+        </h2>
+
+        <div class="cta-bottom">
+          <p>
+            Ovdje se nalaze laboratorijske vježbe, zadaće i projekti izrađeni
+            tijekom nastave.
+          </p>
+
+          <a href="#lv" class="cta-button"> Pogledaj radove ↑ </a>
+        </div>
+      </section>
+    </main>
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
+
+    <footer>
+      <div class="footer-container">
+        <span> © 2026 Moji radovi </span>
+
+        <span> Tehničar za računalstvo </span>
+      </div>
+    </footer>
+  </body>
+</html>
