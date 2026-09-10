@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas
+      id="myCanvas"
+      width="600"
+      height="600"
+      style="border: 1px solid black"
+    ></canvas>
+    <script>
+      let c = document.getElementById("myCanvas");
+      let ctx = c.getContext("2d");
+
+      ctx.moveTo(100, 150);
+      ctx.lineTo(500, 150);
+      ctx.lineTo(300, 80);
+      ctx.lineTo(100, 150);
+      ctx.fillStyle = "brown";
+      ctx.fill();
+      //pravokutnik
+      ctx.beginPath();
+      ctx.rect(100, 150, 400, 200);
+      ctx.fillStyle = "blue";
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.rect(120, 250, 60, 100);
+      ctx.fillStyle = "lightgray";
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.rect(280, 250, 130, 50);
+      ctx.fillStyle = "lightgray";
+      ctx.fill();
+    </script>
+  </body>
+</html>
