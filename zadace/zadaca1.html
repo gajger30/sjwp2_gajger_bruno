@@ -17,7 +17,7 @@
     }
 
     body {
-      fo background-color: #C2F8F7;
+      background-color: #C2F8F7;
     }
 
     h1 {
@@ -65,6 +65,10 @@
     #date {
       width: 100%;
       border-radius: 4px;
+    }
+
+    .podatci {
+      width: 100%;
     }
   </style>
 
@@ -128,13 +132,13 @@
     </tr>
   </table>
   <br>
-  <table>
+  <table class="podatci">
     <tr>
       <th><strong>Ime</strong></th>
       <td>Marko</td>
     <tr>
     <tr>
-      <td rowspan="2"><strong>Telefon</strong></td>
+      <th rowspan="2"><strong>Telefon</strong></th>
       <td>555-1234</td>
 
     </tr>
@@ -144,8 +148,7 @@
   </table>
   <br><br>
 
-  <img src="../slika1.png" alt="slika1">
-
+  <img src="./slika1.png" alt="slika1">
 
   <h2>Primjer SVG-a i Canvasa</h2>
   <canvas id="myCanvas" width="400" height="400" style="border: 1px solid transparent">
@@ -154,7 +157,7 @@
       let c = document.getElementById("myCanvas");
       let ctx = c.getContext("2d");
 
-      //pravokutnik
+      
       ctx.beginPath();
       ctx.rect(10, 10, 400, 400);
       ctx.fillStyle = "lightblue";
@@ -179,7 +182,6 @@
       ctx.rect(270, 140, 20, 40);
       ctx.fillStyle = "yellow";
       ctx.fill();
-
 
       ctx.beginPath();
       ctx.arc(160, 150, 20, 0, 2 * Math.PI);
@@ -209,7 +211,6 @@
       ctx.stroke();
       ctx.fill();
 
-
       ctx.beginPath();
       ctx.arc(195, 195, 45, 0, 1 * Math.PI);
       ctx.fillStyle = "red";
@@ -217,19 +218,57 @@
       ctx.stroke();
       ctx.fill();
 
-      ctx.moveTo(100, 200);
-      ctx.lineTo(250, 300);
-      ctx.stroke()
-
+      //nos
+      ctx.beginPath();
+      ctx.moveTo(195, 165);
+      ctx.lineTo(180, 180);
+      ctx.lineTo(210, 180);
+      ctx.fillStyle = "orange";
+      ctx.strokeStyle = "orange";
+      ctx.stroke();
+      ctx.fill();
+      //kravata lijevo
+      ctx.beginPath();
+      ctx.moveTo(195, 290);
+      ctx.lineTo(145, 265);
+      ctx.lineTo(145, 315);
+      ctx.fillStyle = "blue";
+      ctx.strokeStyle = "blue";
+      ctx.stroke();
+      ctx.fill();
+      //kravata desno
+      ctx.beginPath();
+      ctx.moveTo(195, 290);
+      ctx.lineTo(245, 265);
+      ctx.lineTo(245, 315);
+      ctx.fillStyle = "blue";
+      ctx.strokeStyle = "blue";
+      ctx.stroke();
+      ctx.fill();
+      //masna krug
+      ctx.beginPath();
+      ctx.arc(195, 290, 12, 0, 2 * Math.PI);
+      ctx.fillStyle = "yellow";
+      ctx.fill();
     </script>
-
-
-
   </canvas>
+  <br><br>
+
+  <svg width="400" height="400">
+    <rect width="400" height="400" fill="lightblue" />
+    <rect x="100" y="120" width="170" height="170" fill="beige" />
+    <rect x="100" y="100" width="170" height="30" fill="blue" />
+    <circle cx="140" cy="180" r="15" fill="white" />
+    <circle cx="230" cy="180" r="15" fill="white" />
+    <circle cx="140" cy="180" r="10" fill="blue" />
+    <circle cx="230" cy="180" r="10" fill="blue" />
+    <rect x="75" y="175" width="25" height="50" fill="yellow" />
+    <rect x="270" y="175" width="25" height="50" fill="yellow" />
 
 
+  </svg>
 
-  <form action="#" method="get">
+  <form action="./forma.html" method="get">
     <label for="name">Unesi ime:</label><br />
     <input type="text" id="name" placeholder="Unesi ime..." required />
     <br /><br />
@@ -239,6 +278,7 @@
     <label for="date">Unesi datum:</label><br>
     <input type="date" id="date" placeholder="Unesi datum ..."><br><br>
     <input type="submit" value="Posalji" class="btn" />
+    <input type="reset" value="Reset" class="btn">
   </form>
 
 </body>
