@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zadatak 11</title>
+</head>
+
+<body>
+    <a id="poveznica" href="https://www.google.com">Google</a>
+    <br><br>
+    <button id="gumb">Promijeni poveznicu</button>
+
+    <script>
+        const poveznica = document.getElementById("poveznica");
+        const gumb = document.getElementById("gumb");
+
+        gumb.onclick = function () {
+            poveznica.setAttribute("href", "https://www.wikipedia.org");
+            poveznica.textContent = "Wikipedia";
+        };
+    </script>
+</body>
+
+</html>

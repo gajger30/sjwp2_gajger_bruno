@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zadatak 13</title>
+</head>
+
+<body>
+    <p id="brojac">0</p>
+    <button id="gumb">Povećaj broj</button>
+
+    <script>
+        const brojac = document.getElementById("brojac");
+        const gumb = document.getElementById("gumb");
+        let broj = 0;
+
+        gumb.onclick = function () {
+            broj++;
+            brojac.textContent = broj;
+
+            if (broj >= 10) {
+                brojac.style.color = "green";
+            }
+        };
+    </script>
+</body>
+
+</html>

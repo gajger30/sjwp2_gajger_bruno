@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zadatak 12</title>
+</head>
+
+<body>
+    <button id="onemoguciGumb">Onemogući</button>
+    <button id="omoguciGumb">Omogući</button>
+    <button id="ciljaniGumb">Ciljani gumb</button>
+
+    <script>
+        const onemoguciGumb = document.getElementById("onemoguciGumb");
+        const omoguciGumb = document.getElementById("omoguciGumb");
+        const ciljaniGumb = document.getElementById("ciljaniGumb");
+
+        onemoguciGumb.onclick = function () {
+            ciljaniGumb.setAttribute("disabled", "disabled");
+        };
+
+        omoguciGumb.onclick = function () {
+            ciljaniGumb.removeAttribute("disabled");
+        };
+    </script>
+</body>
+
+</html>

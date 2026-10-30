@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zadatak 8</title>
+
+    <style>
+        .kartica {
+            padding: 20px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .istaknuto {
+            background-color: #ffe680;
+            border-color: #ff9900;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="kartica">Ovo je kartica.</div>
+    <button id="gumb">Promijeni izgled</button>
+
+    <script>
+        const kartica = document.querySelector(".kartica");
+        const gumb = document.getElementById("gumb");
+
+        gumb.onclick = function () {
+            kartica.classList.toggle("istaknuto");
+        };
+    </script>
+</body>
+
+</html>

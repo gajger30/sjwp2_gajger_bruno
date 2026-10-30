@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zadatak 9</title>
+</head>
+
+<body>
+    <p id="odlomak">Ovo je tekst koji se može sakriti ili prikazati.</p>
+    <button id="gumb">Prikaži / Sakrij</button>
+
+    <script>
+        const odlomak = document.getElementById("odlomak");
+        const gumb = document.getElementById("gumb");
+
+        gumb.onclick = function () {
+            if (odlomak.style.display === "none") {
+                odlomak.style.display = "block";
+            } else {
+                odlomak.style.display = "none";
+            }
+        };
+    </script>
+</body>
+
+</html>

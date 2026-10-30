@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zadatak 14</title>
+    <style>
+        .kartica {
+            padding: 20px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            width: 250px;
+            transition: all 0.3s ease;
+        }
+        .svijetla-tema {
+            background-color: #ffffff;
+            color: #222222;
+        }
+        .tamna-tema {
+            background-color: #222222;
+            color: #ffffff;
+            border-color: #444444;
+        }
+    </style>
+</head>
+<body>
+    <div class="kartica svijetla-tema">
+        <h2>Kartica</h2>
+        <p>Ovo je tekst unutar kartice.</p>
+    </div>
+    <button id="gumb">Promijeni temu</button>
+
+    <script>
+        const kartica = document.querySelector(".kartica");
+        const gumb = document.getElementById("gumb");
+
+        gumb.onclick = function () {
+            kartica.classList.toggle("tamna-tema");
+        };
+    </script>
+</body>
+
+</html>
