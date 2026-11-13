@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reakcijski test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .kontejner {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 380px;
+        }
+        #povrsina {
+            width: 100%;
+            height: 200px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.1s;
+        }
+        /* Stanja površine */
+        .stanje-mirovanje { background-color: #6c757d; }
+        .stanje-cekanje   { background-color: #dc3545; }
+        .stanje-klikni    { background-color: #28a745; }
+        .stanje-prerano   { background-color: #fd7e14; }
+        .stanje-gotovo    { background-color: #007bff; }
+
+        .gumbi {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        button {
+            flex: 1;
+            padding: 10px;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        #btnPokreni { background-color: #28a745; }
+        #btnPokreni:hover:not(:disabled) { background-color: #218838; }
+
+        #btnOtkazi { background-color: #dc3545; }
+        #btnOtkazi:hover:not(:disabled) { background-color: #c82333; }
+
+        #btnPonovi { background-color: #6c757d; }
+        #btnPonovi:hover:not(:disabled) { background-color: #545b62; }
+    </style>
+</head>
+<body>
+
+    <div class="kontejner">
+        <h2>Reakcijski test</h2>
+
+        <!-- Klikabilna površina za testiranje reakcije -->
+        <div id="povrsina" class="stanje-mirovanje">Klikni "Pokreni" za početak</div>
+
+        <div class="gumbi">
+            <button id="btnPokreni">Pokreni</button>
+            <button id="btnOtkazi" disabled>Otkaži</button>
+            <button id="btnPonovi">Ponovi</button>
+        </div>
+    </div>
+
+    <script>
+        const povrsina = document.getElementById('povrsina');
+        const btnPokreni = document.getElementById('btnPokreni');
+        const btnOtkazi = document.getElementById('btnOtkazi');
+        const btnPonovi = document.getElementById('btnPonovi');
+
+        let timerId = null;
+        let pocetakMjerenja = 0;
+        // Moguća stanja: 'mirovanje', 'cekanje', 'spremno', 'zavrseno'
+        let stanje = 'mirovanje';
+
+        // 1. Pokretanje testa uz nasumičnu odgodu (1 - 5 sekundi)
+        function pokreniTest() {
+            // 5. Sprječavanje višestrukog pokretanja testa
+            if (stanje === 'cekanje' || stanje === 'spremno') {
+                return;
+            }
+
+            stanje = 'cekanje';
+            btnPokreni.disabled = true;
+            btnOtkazi.disabled = false;
+
+            povrsina.className = 'stanje-cekanje';
+            povrsina.textContent = 'Čekaj zeleno svjetlo...';
+
+            // Nasumično vrijeme između 1000 ms (1s) i 5000 ms (5s)
+            const nasumicnaOdgoda = Math.floor(Math.random() * 4000) + 1000;
+
+            timerId = setTimeout(() => {
+                stanje = 'spremno';
+                btnOtkazi.disabled = true;
+                pocetakMjerenja = performance.now(); // Precizno mjerenje u ms
+
+                povrsina.className = 'stanje-klikni';
+                povrsina.textContent = 'KLIKNI ODMAH!';
+            }, nasumicnaOdgoda);
+        }
+
+        // Obrada klika na obojenu površinu
+        povrsina.addEventListener('click', () => {
+            // 2. Klik prije promjene boje znači „Prerano!”
+            if (stanje === 'cekanje') {
+                clearTimeout(timerId);
+                timerId = null;
+                stanje = 'zavrseno';
+                btnOtkazi.disabled = true;
+
+                povrsina.className = 'stanje-prerano';
+                povrsina.textContent = 'Prerano! Klikni "Ponovi".';
+            } 
+            // 3. i 4. Klik nakon promjene boje zaustavlja mjerenje i računa vrijeme u ms
+            else if (stanje === 'spremno') {
+                const krajMjerenja = performance.now();
+                const vrijemeReakcije = Math.round(krajMjerenja - pocetakMjerenja);
+
+                stanje = 'zavrseno';
+                povrsina.className = 'stanje-gotovo';
+                povrsina.textContent = `Vrijeme reakcije: ${vrijemeReakcije} ms`;
+            }
+        });
+
+        // Dodatno: otkazivanje čekanja pomoću clearTimeout
+        function otkaziCekanje() {
+            if (stanje === 'cekanje' && timerId !== null) {
+                clearTimeout(timerId);
+                timerId = null;
+                stanje = 'mirovanje';
+
+                btnPokreni.disabled = false;
+                btnOtkazi.disabled = true;
+
+                povrsina.className = 'stanje-mirovanje';
+                povrsina.textContent = 'Test otkazan.';
+            }
+        }
+
+        // 6. Resetiranje testa na početno stanje
+        function ponoviTest() {
+            if (timerId !== null) {
+                clearTimeout(timerId);
+                timerId = null;
+            }
+            stanje = 'mirovanje';
+            pocetakMjerenja = 0;
+
+            btnPokreni.disabled = false;
+            btnOtkazi.disabled = true;
+
+            povrsina.className = 'stanje-mirovanje';
+            povrsina.textContent = 'Klikni "Pokreni" za početak';
+        }
+
+        btnPokreni.addEventListener('click', pokreniTest);
+        btnOtkazi.addEventListener('click', otkaziCekanje);
+        btnPonovi.addEventListener('click', ponoviTest);
+    </script>
+
+</body>
+</html>

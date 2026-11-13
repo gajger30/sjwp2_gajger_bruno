@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator s callback funkcijom</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .kontejner {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 320px;
+            text-align: center;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            font-size: 1rem;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input, select {
+            border: 2px solid #ccc;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #rezultat {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            min-height: 28px;
+            color: #333;
+        }
+        .greska {
+            color: #dc3545 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="kontejner">
+        <h2>Kalkulator</h2>
+        
+        <input type="number" id="brojA" placeholder="Unesite prvi broj">
+        
+        <select id="odabirOperacije">
+            <option value="zbroji">Zbrajanje (+)</option>
+            <option value="oduzmi">Oduzimanje (-)</option>
+            <option value="pomnozi">Množenje (*)</option>
+            <option value="podijeli">Dijeljenje (/)</option>
+        </select>
+        
+        <input type="number" id="brojB" placeholder="Unesite drugi broj">
+        
+        <button id="btnIzracunaj">Izračunaj</button>
+        
+        <div id="rezultat"></div>
+    </div>
+
+    <script>
+        // 1. Funkcije za osnovne matematičke operacije
+        function zbroji(a, b) {
+            return a + b;
+        }
+
+        function oduzmi(a, b) {
+            return a - b;
+        }
+
+        function pomnozi(a, b) {
+            return a * b;
+        }
+
+        function podijeli(a, b) {
+            if (b === 0) {
+                return 'Greška: Dijeljenje s nulom nije dozvoljeno!';
+            }
+            return a / b;
+        }
+
+        // 2. i 3. Funkcija izvrsi koja prima callback funkciju kao treći parametar
+        function izvrsi(a, b, operacija) {
+            return operacija(a, b);
+        }
+
+        // Dohvaćanje elemenata iz DOM-a
+        const inputA = document.getElementById('brojA');
+        const inputB = document.getElementById('brojB');
+        const selectOperacija = document.getElementById('odabirOperacije');
+        const btnIzracunaj = document.getElementById('btnIzracunaj');
+        const prikazRezultata = document.getElementById('rezultat');
+
+        // 4. Klik na gumb poziva odgovarajuću operaciju
+        btnIzracunaj.addEventListener('click', () => {
+            // Resetiranje klase greške
+            prikazRezultata.classList.remove('greska');
+
+            // 5. Provjera neispravnog unosa (prazna polja ili NaN)
+            if (inputA.value.trim() === '' || inputB.value.trim() === '') {
+                prikazRezultata.textContent = 'Greška: Unesite oba broja!';
+                prikazRezultata.classList.add('greska');
+                return;
+            }
+
+            const a = parseFloat(inputA.value);
+            const b = parseFloat(inputB.value);
+
+            if (isNaN(a) || isNaN(b)) {
+                prikazRezultata.textContent = 'Greška: Neispravan unos!';
+                prikazRezultata.classList.add('greska');
+                return;
+            }
+
+            let rezultat;
+            const odabrano = selectOperacija.value;
+
+            // Obavezno: funkcije operacija prosljeđuju se bez zagrada (kao reference)
+            if (odabrano === 'zbroji') {
+                rezultat = izvrsi(a, b, zbroji);
+            } else if (odabrano === 'oduzmi') {
+                rezultat = izvrsi(a, b, oduzmi);
+            } else if (odabrano === 'pomnozi') {
+                rezultat = izvrsi(a, b, pomnozi);
+            } else if (odabrano === 'podijeli') {
+                rezultat = izvrsi(a, b, podijeli);
+            }
+
+            // Prikaz rezultata ili poruke o grešci (npr. dijeljenje s nulom)
+            if (typeof rezultat === 'string') {
+                prikazRezultata.textContent = rezultat;
+                prikazRezultata.classList.add('greska');
+            } else {
+                prikazRezultata.textContent = `Rezultat: ${rezultat}`;
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popis proizvoda</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+        }
+        .kontejner {
+            background: white;
+            padding: 25px 35px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 650px;
+        }
+        .kontrole {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #btnSvi {
+            background-color: #6c757d;
+        }
+        #btnSvi:hover {
+            background-color: #545b62;
+        }
+        .proizvod-kartica {
+            border: 1px solid #ddd;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fafafa;
+        }
+        .nazivi-kutija {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="kontejner">
+        <h2>Popis proizvoda</h2>
+        
+        <div class="kontrole">
+            <button id="btnSvi">Svi proizvodi</button>
+            <button id="btnSkuplji">Skuplji od 50 €</button>
+            <button id="btnKategorija">Samo kategorija: Periferija</button>
+        </div>
+
+        <!-- Ovdje forEach ispisuje proizvode -->
+        <div id="popisProizvoda"></div>
+
+        <!-- Ovdje prikazujemo novo polje dobiveno pomoću map() -->
+        <div class="nazivi-kutija" id="popisNaziva"></div>
+    </div>
+
+    <script>
+        // 1. Polje objekata s najmanje 6 proizvoda i traženim svojstvima
+        const proizvodi = [
+            { naziv: 'Mehanička tipkovnica', cijena: 85, kategorija: 'Periferija', stanjeZalihe: 12 },
+            { naziv: 'Bežični miš', cijena: 35, kategorija: 'Periferija', stanjeZalihe: 25 },
+            { naziv: '27" IPS Monitor', cijena: 240, kategorija: 'Monitori', stanjeZalihe: 5 },
+            { naziv: 'USB-C Hub', cijena: 25, kategorija: 'Dodaci', stanjeZalihe: 40 },
+            { naziv: 'Gaming slušalice', cijena: 70, kategorija: 'Periferija', stanjeZalihe: 8 },
+            { naziv: 'NVMe SSD 1TB', cijena: 95, kategorija: 'Komponente', stanjeZalihe: 15 },
+            { naziv: 'Podloga za miš XL', cijena: 18, kategorija: 'Dodaci', stanjeZalihe: 30 }
+        ];
+
+        const kontejnerProizvoda = document.getElementById('popisProizvoda');
+        const kontejnerNaziva = document.getElementById('popisNaziva');
+
+        // 2. Pomoću forEach ispiši proizvode u HTML
+        function prikaziProizvode(lista) {
+            kontejnerProizvoda.innerHTML = ''; // Očisti prethodni prikaz
+
+            lista.forEach((proizvod) => {
+                const kartica = document.createElement('div');
+                kartica.className = 'proizvod-kartica';
+                kartica.innerHTML = `
+                    <div>
+                        <strong>${proizvod.naziv}</strong> <br>
+                        <small>Kategorija: ${proizvod.kategorija} | Na zalihi: ${proizvod.stanjeZalihe} kom</small>
+                    </div>
+                    <div><strong>${proizvod.cijena} €</strong></div>
+                `;
+                kontejnerProizvoda.appendChild(kartica);
+            });
+        }
+
+        // Početni ispis svih proizvoda
+        prikaziProizvode(proizvodi);
+
+        // 4. Pomoću map izradi novo polje naziva proizvoda
+        const naziviProizvoda = proizvodi.map((proizvod) => proizvod.naziv);
+        console.log('Novo polje naziva:', naziviProizvoda);
+        kontejnerNaziva.innerHTML = `<strong>Svi nazivi (dobiveno s map):</strong> ${naziviProizvoda.join(', ')}`;
+
+        // 3. Pomoću filter prikaži proizvode skuplje od 50 €
+        document.getElementById('btnSkuplji').addEventListener('click', () => {
+            const skupljiOd50 = proizvodi.filter((proizvod) => proizvod.cijena > 50);
+            prikaziProizvode(skupljiOd50);
+        });
+
+        // 5. Gumb koji prikazuje samo proizvode određene kategorije (npr. 'Periferija')
+        document.getElementById('btnKategorija').addEventListener('click', () => {
+            const samoPeriferija = proizvodi.filter((proizvod) => proizvod.kategorija === 'Periferija');
+            prikaziProizvode(samoPeriferija);
+        });
+
+        // Dodatni gumb za povratak na prikaz svih proizvoda
+        document.getElementById('btnSvi').addEventListener('click', () => {
+            prikaziProizvode(proizvodi);
+        });
+    </script>
+
+</body>
+</html>

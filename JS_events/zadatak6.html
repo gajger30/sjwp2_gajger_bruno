@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konstruktor i evidencija učenika</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+        }
+        .kontejner {
+            background: white;
+            padding: 25px 35px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        .forma-ocjena {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+        }
+        select, input, button {
+            padding: 10px;
+            font-size: 0.95rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        select { flex: 2; }
+        input { flex: 1; min-width: 100px; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #porukaGreske {
+            color: #dc3545;
+            font-size: 0.9rem;
+            min-height: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .ucenik-kartica {
+            border: 1px solid #ddd;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            background-color: #fafafa;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="kontejner">
+        <h2>Evidencija učenika</h2>
+
+        <!-- Forma za dodavanje ocjene odabranom učeniku -->
+        <div class="forma-ocjena">
+            <select id="odabirUcenika"></select>
+            <input type="number" id="novaOcjena" min="1" max="5" placeholder="Ocjena (1-5)">
+            <button id="btnDodajOcjenu">Dodaj ocjenu</button>
+        </div>
+        <div id="porukaGreske"></div>
+
+        <!-- Prikaz učenika -->
+        <div id="popisUcenika"></div>
+    </div>
+
+    <script>
+        // Konstruktorska funkcija Ucenik
+        function Ucenik(ime, prezime, razred, ocjene) {
+            this.ime = ime;
+            this.prezime = prezime;
+            this.razred = razred;
+            this.ocjene = ocjene;
+
+            // Metoda koja računa i vraća prosjek ocjena
+            this.izracunajProsjek = function() {
+                if (this.ocjene.length === 0) return 0;
+                const zbroj = this.ocjene.reduce((suma, tren) => suma + tren, 0);
+                return (zbroj / this.ocjene.length).toFixed(2);
+            };
+
+            // Metoda za dodavanje nove ocjene uz provjeru raspona 1-5
+            this.dodajOcjenu = function(ocjena) {
+                if (!Number.isInteger(ocjena) || ocjena < 1 || ocjena > 5) {
+                    return false; // Odbijanje neispravne ocjene
+                }
+                this.ocjene.push(ocjena);
+                return true;
+            };
+
+            // Metoda koja vraća formatirani tekst s podacima učenika
+            this.prikaziPodatke = function() {
+                return `<strong>${this.ime} ${this.prezime}</strong> (${this.razred}) — Ocjene: [${this.ocjene.join(', ')}] | Prosjek: <strong>${this.izracunajProsjek()}</strong>`;
+            };
+        }
+
+        // Stvaranje najmanje 3 učenika pomoću ključne riječi new
+        const ucenici = [
+            new Ucenik('Ivan', 'Horvat', '4.A', [5, 4, 5, 4]),
+            new Ucenik('Ana', 'Kovač', '4.B', [5, 5, 4, 5]),
+            new Ucenik('Marko', 'Babić', '4.A', [3, 4, 3, 5])
+        ];
+
+        const kontejnerUcenika = document.getElementById('popisUcenika');
+        const selectUcenik = document.getElementById('odabirUcenika');
+        const inputOcjena = document.getElementById('novaOcjena');
+        const porukaGreske = document.getElementById('porukaGreske');
+
+        // Popunjavanje padajućeg izbornika s učenicima
+        function popuniIzbornik() {
+            selectUcenik.innerHTML = '';
+            ucenici.forEach((ucenik, indeks) => {
+                const opcija = document.createElement('option');
+                opcija.value = indeks;
+                opcija.textContent = `${ucenik.ime} ${ucenik.prezime} (${ucenik.razred})`;
+                selectUcenik.appendChild(opcija);
+            });
+        }
+
+        // Ispis svih učenika na stranicu koristeći metodu prikaziPodatke()
+        function osvjeziPrikaz() {
+            kontejnerUcenika.innerHTML = '';
+            ucenici.forEach((ucenik) => {
+                const kartica = document.createElement('div');
+                kartica.className = 'ucenik-kartica';
+                kartica.innerHTML = ucenik.prikaziPodatke();
+                kontejnerUcenika.appendChild(kartica);
+            });
+        }
+
+        // Obrada klika za dodavanje nove ocjene
+        document.getElementById('btnDodajOcjenu').addEventListener('click', () => {
+            porukaGreske.textContent = '';
+
+            const odabraniIndeks = selectUcenik.value;
+            const unesenaVrijednost = Number(inputOcjena.value);
+
+            const odabraniUcenik = ucenici[odabraniIndeks];
+            const uspjesno = odabraniUcenik.dodajOcjenu(unesenaVrijednost);
+
+            if (!uspjesno) {
+                porukaGreske.textContent = 'Greška: Ocjena mora biti cijeli broj u rasponu od 1 do 5!';
+                return;
+            }
+
+            inputOcjena.value = '';
+            osvjeziPrikaz();
+        });
+
+        // Inicijalno pokretanje
+        popuniIzbornik();
+        osvjeziPrikaz();
+    </script>
+
+</body>
+</html>

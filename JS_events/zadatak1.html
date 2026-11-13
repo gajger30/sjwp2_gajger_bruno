@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brojač klikova</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .kontejner {
+            text-align: center;
+            background: white;
+            padding: 30px 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        #prikazBroja {
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #333;
+        }
+        button {
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #btnReset {
+            background-color: #dc3545;
+        }
+        #btnReset:hover {
+            background-color: #a71d2a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="kontejner">
+        <h2>Brojač klikova</h2>
+        <!-- Element za prikaz broja s početnom vrijednosti 0 -->
+        <div id="prikazBroja">0</div>
+        
+        <!-- Gumbi -->
+        <button id="btnMinus">-</button>
+        <button id="btnReset">Reset</button>
+        <button id="btnPlus">+</button>
+    </div>
+
+    <script>
+        // Početna vrijednost broja je 0
+        let brojac = 0;
+
+        // Dohvaćanje elemenata iz HTML-a
+        const prikazBroja = document.getElementById('prikazBroja');
+        const btnPlus = document.getElementById('btnPlus');
+        const btnMinus = document.getElementById('btnMinus');
+        const btnReset = document.getElementById('btnReset');
+
+        // Funkcija za ažuriranje prikaza na ekranu
+        function azurirajPrikaz() {
+            prikazBroja.textContent = brojac;
+        }
+
+        // Obrada događaja pomoću addEventListener
+        btnPlus.addEventListener('click', () => {
+            brojac++;
+            azurirajPrikaz();
+        });
+
+        btnMinus.addEventListener('click', () => {
+            brojac--;
+            azurirajPrikaz();
+        });
+
+        btnReset.addEventListener('click', () => {
+            brojac = 0;
+            azurirajPrikaz();
+        });
+    </script>
+
+</body>
+</html>

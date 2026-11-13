@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini sustav narudžbi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+        }
+        .kontejner {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            max-width: 900px;
+            width: 100%;
+        }
+        .sekcija {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 300px;
+        }
+        h2 {
+            margin-top: 0;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        .stavka {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            background-color: #fafafa;
+        }
+        button {
+            padding: 8px 14px;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-dodaj { background-color: #007bff; }
+        .btn-dodaj:hover { background-color: #0056b3; }
+
+        .btn-ukloni { background-color: #dc3545; padding: 6px 10px; }
+        .btn-ukloni:hover { background-color: #c82333; }
+
+        .kosarica-dno {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #f0f0f0;
+        }
+        #ukupnaCijena {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .akcije-kosarice {
+            display: flex;
+            gap: 10px;
+        }
+        #btnIsprazni { background-color: #6c757d; flex: 1; }
+        #btnIsprazni:hover:not(:disabled) { background-color: #545b62; }
+
+        #btnPotvrdi { background-color: #28a745; flex: 1; }
+        #btnPotvrdi:hover:not(:disabled) { background-color: #218838; }
+
+        #statusPoruka {
+            margin-top: 15px;
+            font-weight: bold;
+            text-align: center;
+            min-height: 22px;
+            color: #28a745;
+        }
+        .cekanje { color: #fd7e14 !important; }
+    </style>
+</head>
+<body>
+
+    <div class="kontejner">
+        <!-- 1. Prikaz dostupnih proizvoda -->
+        <div class="sekcija">
+            <h2>Dostupni proizvodi</h2>
+            <div id="dostupniProizvodi"></div>
+        </div>
+
+        <!-- 3. Prikaz stavki i ukupne cijene -->
+        <div class="sekcija">
+            <h2>Košarica</h2>
+            <div id="stavkeKosarice">
+                <p style="color: #777;">Košarica je trenutno prazna.</p>
+            </div>
+
+            <div class="kosarica-dno">
+                <div id="ukupnaCijena">Ukupno: 0.00 €</div>
+                <div class="akcije-kosarice">
+                    <button id="btnIsprazni" disabled>Isprazni košaricu</button>
+                    <button id="btnPotvrdi" disabled>Potvrdi narudžbu</button>
+                </div>
+                <div id="statusPoruka"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // MODEL
+        // Konstruktor Proizvod(naziv, cijena, kolicina) s metodom ukupnaCijena()
+        function Proizvod(naziv, cijena, kolicina = 1) {
+            this.naziv = naziv;
+            this.cijena = cijena;
+            this.kolicina = kolicina;
+
+            this.ukupnaCijena = function() {
+                return this.cijena * this.kolicina;
+            };
+        }
+
+        // Objekt kosarica s poljem proizvoda i metodama dodaj(), ukloni() i izracunajUkupno()
+        const kosarica = {
+            proizvodi: [],
+
+            dodaj(naziv, cijena, callback) {
+                const postojeci = this.proizvodi.find((p) => p.naziv === naziv);
+                if (postojeci) {
+                    postojeci.kolicina++;
+                } else {
+                    this.proizvodi.push(new Proizvod(naziv, cijena, 1));
+                }
+                if (callback) callback();
+            },
+
+            ukloni(naziv, callback) {
+                const indeks = this.proizvodi.findIndex((p) => p.naziv === naziv);
+                if (indeks !== -1) {
+                    if (this.proizvodi[indeks].kolicina > 1) {
+                        this.proizvodi[indeks].kolicina--;
+                    } else {
+                        this.proizvodi.splice(indeks, 1);
+                    }
+                }
+                if (callback) callback();
+            },
+
+            isprazni(callback) {
+                this.proizvodi = [];
+                if (callback) callback();
+            },
+
+            izracunajUkupno() {
+                return this.proizvodi.reduce((suma, proizvod) => suma + proizvod.ukupnaCijena(), 0);
+            }
+        };
+
+        // Katalog dostupnih proizvoda u trgovini
+        const katalog = [
+            { naziv: 'Bežični miš', cijena: 25.00 },
+            { naziv: 'Mehanička tipkovnica', cijena: 79.90 },
+            { naziv: 'USB-C kabel 2m', cijena: 12.50 },
+            { naziv: 'Podloga za miš', cijena: 15.00 },
+            { naziv: 'Web kamera HD', cijena: 45.00 }
+        ];
+
+        const dostupniEl = document.getElementById('dostupniProizvodi');
+        const stavkeEl = document.getElementById('stavkeKosarice');
+        const ukupnoEl = document.getElementById('ukupnaCijena');
+        const btnIsprazni = document.getElementById('btnIsprazni');
+        const btnPotvrdi = document.getElementById('btnPotvrdi');
+        const statusEl = document.getElementById('statusPoruka');
+
+        // 1. i 2. Generiranje prikaza dostupnih proizvoda i povezivanje klika
+        function prikaziKatalog() {
+            dostupniEl.innerHTML = '';
+            katalog.forEach((artikl) => {
+                const div = document.createElement('div');
+                div.className = 'stavka';
+                div.innerHTML = `
+                    <div>
+                        <strong>${artikl.naziv}</strong><br>
+                        <small>${artikl.cijena.toFixed(2)} €</small>
+                    </div>
+                `;
+
+                const gumb = document.createElement('button');
+                gumb.className = 'btn-dodaj';
+                gumb.textContent = 'Dodaj u košaricu';
+                gumb.addEventListener('click', () => {
+                    statusEl.textContent = '';
+                    // 5. Prosljeđivanje osvjeziKosaricu kao callback funkcije
+                    kosarica.dodaj(artikl.naziv, artikl.cijena, osvjeziKosaricu);
+                });
+
+                div.appendChild(gumb);
+                dostupniEl.appendChild(div);
+            });
+        }
+
+        // 3. Callback funkcija koja osvježava prikaz stavki i ukupnog iznosa
+        function osvjeziKosaricu() {
+            stavkeEl.innerHTML = '';
+
+            if (kosarica.proizvodi.length === 0) {
+                stavkeEl.innerHTML = '<p style="color: #777;">Košarica je trenutno prazna.</p>';
+                btnIsprazni.disabled = true;
+                btnPotvrdi.disabled = true;
+            } else {
+                btnIsprazni.disabled = false;
+                btnPotvrdi.disabled = false;
+
+                kosarica.proizvodi.forEach((stavka) => {
+                    const div = document.createElement('div');
+                    div.className = 'stavka';
+                    div.innerHTML = `
+                        <div>
+                            <strong>${stavka.naziv}</strong> (x${stavka.kolicina})<br>
+                            <small>${stavka.cijena.toFixed(2)} € / kom — Ukupno: <strong>${stavka.ukupnaCijena().toFixed(2)} €</strong></small>
+                        </div>
+                    `;
+
+                    const gumbUkloni = document.createElement('button');
+                    gumbUkloni.className = 'btn-ukloni';
+                    gumbUkloni.textContent = 'Ukloni 1';
+                    gumbUkloni.addEventListener('click', () => {
+                        kosarica.ukloni(stavka.naziv, osvjeziKosaricu);
+                    });
+
+                    div.appendChild(gumbUkloni);
+                    stavkeEl.appendChild(div);
+                });
+            }
+
+            // Poziv metode izracunajUkupno()
+            const ukupanIznos = kosarica.izracunajUkupno();
+            ukupnoEl.textContent = `Ukupno: ${ukupanIznos.toFixed(2)} €`;
+        }
+
+        // 4. Gumb „Isprazni košaricu”
+        btnIsprazni.addEventListener('click', () => {
+            statusEl.textContent = '';
+            kosarica.isprazni(osvjeziKosaricu);
+        });
+
+        // 6. Potvrda narudžbe i setTimeout poruka „Narudžba zaprimljena”
+        btnPotvrdi.addEventListener('click', () => {
+            if (kosarica.proizvodi.length === 0) return;
+
+            btnPotvrdi.disabled = true;
+            btnIsprazni.disabled = true;
+            statusEl.className = 'cekanje';
+            statusEl.textContent = 'Obrada narudžbe...';
+
+            setTimeout(() => {
+                kosarica.isprazni(osvjeziKosaricu);
+                statusEl.className = '';
+                statusEl.textContent = 'Narudžba zaprimljena!';
+            }, 1500);
+        });
+
+        // Inicijalizacija sučelja
+        prikaziKatalog();
+        osvjeziKosaricu();
+    </script>
+
+</body>
+</html>

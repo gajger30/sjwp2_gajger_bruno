@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Igra: Pogodi broj</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .kontejner {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 340px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        input:disabled {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+        .gumbi {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        button {
+            flex: 1;
+            padding: 10px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        #btnProvjeri {
+            background-color: #007bff;
+        }
+        #btnProvjeri:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+        #btnProvjeri:disabled {
+            background-color: #8cbff8;
+            cursor: not-allowed;
+        }
+        #btnNovaIgra {
+            background-color: #6c757d;
+        }
+        #btnNovaIgra:hover {
+            background-color: #545b62;
+        }
+        #poruka {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            min-height: 26px;
+            color: #333;
+        }
+        #brojacPokusaja {
+            margin-top: 10px;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        .pogodak { color: #28a745 !important; }
+        .greska { color: #dc3545 !important; }
+    </style>
+</head>
+<body>
+
+    <div class="kontejner">
+        <h2>Pogodi broj (1 – 100)</h2>
+        
+        <input type="number" id="unosPokusaja" min="1" max="100" placeholder="Unesi broj...">
+        
+        <div class="gumbi">
+            <button id="btnProvjeri">Provjeri</button>
+            <button id="btnNovaIgra">Nova igra</button>
+        </div>
+
+        <div id="poruka"></div>
+        <div id="brojacPokusaja">Broj pokušaja: 0</div>
+    </div>
+
+    <script>
+        let zamisljeniBroj;
+        let brojPokusaja;
+        let igraAktivna;
+
+        const inputPokusaj = document.getElementById('unosPokusaja');
+        const btnProvjeri = document.getElementById('btnProvjeri');
+        const btnNovaIgra = document.getElementById('btnNovaIgra');
+        const prikazPoruke = document.getElementById('poruka');
+        const prikazBrojaca = document.getElementById('brojacPokusaja');
+
+        // Funkcija za generiranje nasumičnog broja od 1 do 100
+        function generirajBroj() {
+            return Math.floor(Math.random() * 100) + 1;
+        }
+
+        // Funkcija za ažuriranje prikaza brojača i poruke
+        function azurirajSučelje(tekst, klasa = '') {
+            prikazPoruke.className = klasa;
+            prikazPoruke.textContent = tekst;
+            prikazBrojaca.textContent = `Broj pokušaja: ${brojPokusaja}`;
+        }
+
+        // 5. Funkcija za pokretanje/resetiranje igre
+        function pokreniNovuIgru() {
+            zamisljeniBroj = generirajBroj();
+            brojPokusaja = 0;
+            igraAktivna = true;
+
+            inputPokusaj.value = '';
+            inputPokusaj.disabled = false;
+            btnProvjeri.disabled = false;
+            inputPokusaj.focus();
+
+            azurirajSučelje('Upiši broj i započni pogađanje!');
+        }
+
+        // Funkcija za provjeru korisnikovog pokušaja (prima callback za završetak igre)
+        function provjeriPokusaj(onPogodakCallback) {
+            if (!igraAktivna) return;
+
+            const pokusaj = Number(inputPokusaj.value);
+
+            // Validacija unosa
+            if (!Number.isInteger(pokusaj) || pokusaj < 1 || pokusaj > 100) {
+                azurirajSučelje('Unesi cijeli broj između 1 i 100!', 'greska');
+                return;
+            }
+
+            // 2. Povećavanje broja pokušaja
+            brojPokusaja++;
+
+            // 1. i 3. Usporedba pokušaja sa zamišljenim brojem
+            if (pokusaj === zamisljeniBroj) {
+                onPogodakCallback();
+            } else if (pokusaj < zamisljeniBroj) {
+                azurirajSučelje('Zamišljeni broj je VEĆI!');
+            } else {
+                azurirajSučelje('Zamišljeni broj je MANJI!');
+            }
+
+            inputPokusaj.value = '';
+            inputPokusaj.focus();
+        }
+
+        // Callback funkcija koja se izvršava kod točnog pogotka
+        function zavrsiIgru() {
+            igraAktivna = false;
+            inputPokusaj.disabled = true;
+            btnProvjeri.disabled = true;
+            azurirajSučelje(`Bravo! Pogodio si broj ${zamisljeniBroj}!`, 'pogodak');
+        }
+
+        // Povezivanje događaja click i keydown
+        btnProvjeri.addEventListener('click', () => {
+            provjeriPokusaj(zavrsiIgru);
+        });
+
+        // 4. Enter ima istu funkciju kao klik na gumb "Provjeri"
+        inputPokusaj.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                provjeriPokusaj(zavrsiIgru);
+            }
+        });
+
+        btnNovaIgra.addEventListener('click', pokreniNovuIgru);
+
+        // Inicijalno pokretanje igre pri učitavanju stranice
+        pokreniNovuIgru();
+    </script>
+
+</body>
+</html>
