@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="hr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
             height: 100vh;
             margin: 0;
         }
+
         .kontejner {
             background: white;
             padding: 30px 40px;
@@ -22,6 +24,7 @@
             text-align: center;
             width: 380px;
         }
+
         #povrsina {
             width: 100%;
             height: 200px;
@@ -37,18 +40,33 @@
             user-select: none;
             transition: background-color 0.1s;
         }
-        /* Stanja površine */
-        .stanje-mirovanje { background-color: #6c757d; }
-        .stanje-cekanje   { background-color: #dc3545; }
-        .stanje-klikni    { background-color: #28a745; }
-        .stanje-prerano   { background-color: #fd7e14; }
-        .stanje-gotovo    { background-color: #007bff; }
+
+        .stanje-mirovanje {
+            background-color: #6c757d;
+        }
+
+        .stanje-cekanje {
+            background-color: #dc3545;
+        }
+
+        .stanje-klikni {
+            background-color: #28a745;
+        }
+
+        .stanje-prerano {
+            background-color: #fd7e14;
+        }
+
+        .stanje-gotovo {
+            background-color: #007bff;
+        }
 
         .gumbi {
             display: flex;
             gap: 10px;
             justify-content: center;
         }
+
         button {
             flex: 1;
             padding: 10px;
@@ -60,26 +78,44 @@
             font-weight: bold;
             transition: background-color 0.2s, opacity 0.2s;
         }
+
         button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
-        #btnPokreni { background-color: #28a745; }
-        #btnPokreni:hover:not(:disabled) { background-color: #218838; }
 
-        #btnOtkazi { background-color: #dc3545; }
-        #btnOtkazi:hover:not(:disabled) { background-color: #c82333; }
+        #btnPokreni {
+            background-color: #28a745;
+        }
 
-        #btnPonovi { background-color: #6c757d; }
-        #btnPonovi:hover:not(:disabled) { background-color: #545b62; }
+        #btnPokreni:hover:not(:disabled) {
+            background-color: #218838;
+        }
+
+        #btnOtkazi {
+            background-color: #dc3545;
+        }
+
+        #btnOtkazi:hover:not(:disabled) {
+            background-color: #c82333;
+        }
+
+        #btnPonovi {
+            background-color: #6c757d;
+        }
+
+        #btnPonovi:hover:not(:disabled) {
+            background-color: #545b62;
+        }
     </style>
 </head>
+
 <body>
 
     <div class="kontejner">
         <h2>Reakcijski test</h2>
 
-        <!-- Klikabilna površina za testiranje reakcije -->
+
         <div id="povrsina" class="stanje-mirovanje">Klikni "Pokreni" za početak</div>
 
         <div class="gumbi">
@@ -97,12 +133,12 @@
 
         let timerId = null;
         let pocetakMjerenja = 0;
-        // Moguća stanja: 'mirovanje', 'cekanje', 'spremno', 'zavrseno'
+
         let stanje = 'mirovanje';
 
-        // 1. Pokretanje testa uz nasumičnu odgodu (1 - 5 sekundi)
+
         function pokreniTest() {
-            // 5. Sprječavanje višestrukog pokretanja testa
+
             if (stanje === 'cekanje' || stanje === 'spremno') {
                 return;
             }
@@ -114,22 +150,22 @@
             povrsina.className = 'stanje-cekanje';
             povrsina.textContent = 'Čekaj zeleno svjetlo...';
 
-            // Nasumično vrijeme između 1000 ms (1s) i 5000 ms (5s)
+
             const nasumicnaOdgoda = Math.floor(Math.random() * 4000) + 1000;
 
             timerId = setTimeout(() => {
                 stanje = 'spremno';
                 btnOtkazi.disabled = true;
-                pocetakMjerenja = performance.now(); // Precizno mjerenje u ms
+                pocetakMjerenja = performance.now();
 
                 povrsina.className = 'stanje-klikni';
                 povrsina.textContent = 'KLIKNI ODMAH!';
             }, nasumicnaOdgoda);
         }
 
-        // Obrada klika na obojenu površinu
+
         povrsina.addEventListener('click', () => {
-            // 2. Klik prije promjene boje znači „Prerano!”
+
             if (stanje === 'cekanje') {
                 clearTimeout(timerId);
                 timerId = null;
@@ -138,8 +174,8 @@
 
                 povrsina.className = 'stanje-prerano';
                 povrsina.textContent = 'Prerano! Klikni "Ponovi".';
-            } 
-            // 3. i 4. Klik nakon promjene boje zaustavlja mjerenje i računa vrijeme u ms
+            }
+
             else if (stanje === 'spremno') {
                 const krajMjerenja = performance.now();
                 const vrijemeReakcije = Math.round(krajMjerenja - pocetakMjerenja);
@@ -150,7 +186,7 @@
             }
         });
 
-        // Dodatno: otkazivanje čekanja pomoću clearTimeout
+
         function otkaziCekanje() {
             if (stanje === 'cekanje' && timerId !== null) {
                 clearTimeout(timerId);
@@ -165,7 +201,6 @@
             }
         }
 
-        // 6. Resetiranje testa na početno stanje
         function ponoviTest() {
             if (timerId !== null) {
                 clearTimeout(timerId);
@@ -187,4 +222,5 @@
     </script>
 
 </body>
+
 </html>

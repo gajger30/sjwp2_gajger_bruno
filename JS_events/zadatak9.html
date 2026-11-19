@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="hr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
             margin: 0;
             padding: 0;
         }
+
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: radial-gradient(circle at top, #131b2e 0%, #090d16 100%);
@@ -22,20 +24,24 @@
             padding: 20px;
             user-select: none;
         }
+
         .header {
             text-align: center;
             margin-bottom: 18px;
         }
+
         .header h1 {
             font-size: 1.6rem;
             letter-spacing: 0.5px;
             color: #f8fafc;
         }
+
         .header p {
             font-size: 0.9rem;
             color: #94a3b8;
             margin-top: 4px;
         }
+
         .hud {
             display: flex;
             align-items: center;
@@ -51,6 +57,7 @@
             gap: 15px;
             flex-wrap: wrap;
         }
+
         .koordinate {
             font-family: 'Consolas', monospace;
             font-size: 0.95rem;
@@ -61,16 +68,19 @@
             border: 1px solid rgba(56, 189, 248, 0.25);
             min-width: 155px;
         }
+
         .kontrole {
             display: flex;
             align-items: center;
             gap: 14px;
             flex-wrap: wrap;
         }
+
         .boje {
             display: flex;
             gap: 7px;
         }
+
         .boja-btn {
             width: 22px;
             height: 22px;
@@ -79,13 +89,16 @@
             cursor: pointer;
             transition: transform 0.15s, border-color 0.15s;
         }
+
         .boja-btn:hover {
             transform: scale(1.18);
         }
+
         .boja-btn.aktivna {
             border-color: #ffffff;
             transform: scale(1.15);
         }
+
         .brzina-wrap {
             display: flex;
             align-items: center;
@@ -93,11 +106,13 @@
             font-size: 0.85rem;
             color: #cbd5e1;
         }
+
         input[type="range"] {
             accent-color: #38bdf8;
             cursor: pointer;
             width: 90px;
         }
+
         #btnReset {
             background: linear-gradient(135deg, #ef4444, #dc2626);
             color: white;
@@ -110,22 +125,24 @@
             transition: transform 0.12s, box-shadow 0.2s;
             box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
         }
+
         #btnReset:hover {
             transform: translateY(-1px);
             box-shadow: 0 6px 16px rgba(239, 68, 68, 0.45);
         }
+
         #btnReset:active {
             transform: translateY(0);
         }
 
-        /* Ograničeni prostor (arena) */
+
         #arena {
             position: relative;
             width: 720px;
             height: 440px;
             max-width: 100%;
             background-color: #0b1120;
-            background-image: 
+            background-image:
                 linear-gradient(rgba(56, 189, 248, 0.06) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(56, 189, 248, 0.06) 1px, transparent 1px);
             background-size: 30px 30px;
@@ -135,7 +152,7 @@
             overflow: hidden;
         }
 
-        /* Obojeni kvadrat igrača */
+
         #igracElement {
             position: absolute;
             top: 0;
@@ -149,7 +166,7 @@
             justify-content: center;
             transition: background-color 0.2s, box-shadow 0.2s;
         }
-        /* Suptilni unutarnji odsjaj kvadrata */
+
         #igracElement::after {
             content: '';
             width: 14px;
@@ -165,6 +182,7 @@
             font-size: 0.85rem;
             color: #64748b;
         }
+
         kbd {
             background: #1e293b;
             color: #e2e8f0;
@@ -176,6 +194,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="header">
@@ -210,7 +229,8 @@
     </div>
 
     <div class="tipke-info">
-        <span>Kretanje: <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> ili <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd></span>
+        <span>Kretanje: <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> ili <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd>
+            <kbd>D</kbd></span>
         <span>Reset: <kbd>R</kbd></span>
     </div>
 
@@ -223,14 +243,14 @@
 
         const VELICINA_IGRACA = 44;
 
-        // Izrada objekta Igrac sa svim traženim svojstvima i metodama
+
         const Igrac = {
             x: 0,
             y: 0,
             brzina: 6,
             boja: '#00f5d4',
 
-            // Pomoćne metode za izračun maksimalnih granica prostora
+
             maxX() {
                 return arena.clientWidth - VELICINA_IGRACA;
             },
@@ -238,38 +258,38 @@
                 return arena.clientHeight - VELICINA_IGRACA;
             },
 
-            // Metoda za pomicanje ulijevo (uz sprječavanje izlaska iz prostora)
+
             pomakniLijevo(faktor = 1) {
                 this.x = Math.max(0, this.x - this.brzina * faktor);
                 this.azurirajPrikaz();
             },
 
-            // Metoda za pomicanje udesno
+
             pomakniDesno(faktor = 1) {
                 this.x = Math.min(this.maxX(), this.x + this.brzina * faktor);
                 this.azurirajPrikaz();
             },
 
-            // Metoda za pomicanje gore
+
             pomakniGore(faktor = 1) {
                 this.y = Math.max(0, this.y - this.brzina * faktor);
                 this.azurirajPrikaz();
             },
 
-            // Metoda za pomicanje dolje
+
             pomakniDolje(faktor = 1) {
                 this.y = Math.min(this.maxY(), this.y + this.brzina * faktor);
                 this.azurirajPrikaz();
             },
 
-            // Metoda za resetiranje pozicije u centar prostora
+
             resetiraj() {
                 this.x = Math.round(this.maxX() / 2);
                 this.y = Math.round(this.maxY() / 2);
                 this.azurirajPrikaz();
             },
 
-            // Renderiranje pozicije i stila na ekranu (GPU-ubrzani transform)
+
             azurirajPrikaz() {
                 igracEl.style.transform = `translate3d(${this.x}px, ${this.y}px, 0)`;
                 igracEl.style.backgroundColor = this.boja;
@@ -278,21 +298,21 @@
             }
         };
 
-        // Praćenje trenutno pritisnutih tipki za savršeno glatko kretanje bez zastajkivanja
+
         const pritisnuteTipke = {};
 
-        // 2. Korištenje keydown i event.key (podržava Strelice i WASD)
+
         document.addEventListener('keydown', (event) => {
             const tipka = event.key.toLowerCase();
 
-            // Sprječava skrolanje stranice strelicama
+
             if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' '].includes(tipka)) {
                 event.preventDefault();
             }
 
             pritisnuteTipke[tipka] = true;
 
-            // Brzi reset na tipku R
+
             if (tipka === 'r') {
                 Igrac.resetiraj();
             }
@@ -303,34 +323,34 @@
             pritisnuteTipke[tipka] = false;
         });
 
-        // Ako korisnik prebaci prozor (Alt+Tab), očisti pritisnute tipke da igrač ne "odleti" sam
+
         window.addEventListener('blur', () => {
             for (const kljuc in pritisnuteTipke) {
                 pritisnuteTipke[kljuc] = false;
             }
         });
 
-        // Glavna 60+ FPS petlja za fluidno kretanje
+
         function animacijskaPetlja() {
             const lijevo = pritisnuteTipke['arrowleft'] || pritisnuteTipke['a'];
-            const desno  = pritisnuteTipke['arrowright'] || pritisnuteTipke['d'];
-            const gore   = pritisnuteTipke['arrowup'] || pritisnuteTipke['w'];
-            const dolje  = pritisnuteTipke['arrowdown'] || pritisnuteTipke['s'];
+            const desno = pritisnuteTipke['arrowright'] || pritisnuteTipke['d'];
+            const gore = pritisnuteTipke['arrowup'] || pritisnuteTipke['w'];
+            const dolje = pritisnuteTipke['arrowdown'] || pritisnuteTipke['s'];
 
-            // Normalizacija brzine kod dijagonalnog kretanja (da dijagonalno ne ide 1.41x brže)
+
             const vodoravno = (lijevo ? -1 : 0) + (desno ? 1 : 0);
-            const okomito   = (gore ? -1 : 0) + (dolje ? 1 : 0);
+            const okomito = (gore ? -1 : 0) + (dolje ? 1 : 0);
             const faktor = (vodoravno !== 0 && okomito !== 0) ? Math.SQRT1_2 : 1;
 
             if (lijevo) Igrac.pomakniLijevo(faktor);
-            if (desno)  Igrac.pomakniDesno(faktor);
-            if (gore)   Igrac.pomakniGore(faktor);
-            if (dolje)  Igrac.pomakniDolje(faktor);
+            if (desno) Igrac.pomakniDesno(faktor);
+            if (gore) Igrac.pomakniGore(faktor);
+            if (dolje) Igrac.pomakniDolje(faktor);
 
             requestAnimationFrame(animacijskaPetlja);
         }
 
-        // Dodatne kontrole sučelja (Reset gumb, odabir boje, slider brzine)
+
         document.getElementById('btnReset').addEventListener('click', () => {
             Igrac.resetiraj();
         });
@@ -349,10 +369,11 @@
             vrijednostBrzine.textContent = Igrac.brzina;
         });
 
-        // Početno pozicioniranje u centar i pokretanje petlje
+
         Igrac.resetiraj();
         requestAnimationFrame(animacijskaPetlja);
     </script>
 
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="hr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
             display: flex;
             justify-content: center;
         }
+
         .kontejner {
             display: flex;
             flex-wrap: wrap;
@@ -20,6 +22,7 @@
             max-width: 900px;
             width: 100%;
         }
+
         .sekcija {
             background: white;
             padding: 25px;
@@ -28,11 +31,13 @@
             flex: 1;
             min-width: 300px;
         }
+
         h2 {
             margin-top: 0;
             border-bottom: 2px solid #f0f0f0;
             padding-bottom: 10px;
         }
+
         .stavka {
             display: flex;
             justify-content: space-between;
@@ -43,6 +48,7 @@
             margin-bottom: 10px;
             background-color: #fafafa;
         }
+
         button {
             padding: 8px 14px;
             font-size: 0.9rem;
@@ -53,36 +59,64 @@
             font-weight: bold;
             transition: background-color 0.2s, opacity 0.2s;
         }
+
         button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
-        .btn-dodaj { background-color: #007bff; }
-        .btn-dodaj:hover { background-color: #0056b3; }
 
-        .btn-ukloni { background-color: #dc3545; padding: 6px 10px; }
-        .btn-ukloni:hover { background-color: #c82333; }
+        .btn-dodaj {
+            background-color: #007bff;
+        }
+
+        .btn-dodaj:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-ukloni {
+            background-color: #dc3545;
+            padding: 6px 10px;
+        }
+
+        .btn-ukloni:hover {
+            background-color: #c82333;
+        }
 
         .kosarica-dno {
             margin-top: 20px;
             padding-top: 15px;
             border-top: 2px solid #f0f0f0;
         }
+
         #ukupnaCijena {
             font-size: 1.25rem;
             font-weight: bold;
             margin-bottom: 15px;
             color: #333;
         }
+
         .akcije-kosarice {
             display: flex;
             gap: 10px;
         }
-        #btnIsprazni { background-color: #6c757d; flex: 1; }
-        #btnIsprazni:hover:not(:disabled) { background-color: #545b62; }
 
-        #btnPotvrdi { background-color: #28a745; flex: 1; }
-        #btnPotvrdi:hover:not(:disabled) { background-color: #218838; }
+        #btnIsprazni {
+            background-color: #6c757d;
+            flex: 1;
+        }
+
+        #btnIsprazni:hover:not(:disabled) {
+            background-color: #545b62;
+        }
+
+        #btnPotvrdi {
+            background-color: #28a745;
+            flex: 1;
+        }
+
+        #btnPotvrdi:hover:not(:disabled) {
+            background-color: #218838;
+        }
 
         #statusPoruka {
             margin-top: 15px;
@@ -91,19 +125,23 @@
             min-height: 22px;
             color: #28a745;
         }
-        .cekanje { color: #fd7e14 !important; }
+
+        .cekanje {
+            color: #fd7e14 !important;
+        }
     </style>
 </head>
+
 <body>
 
     <div class="kontejner">
-        <!-- 1. Prikaz dostupnih proizvoda -->
+
         <div class="sekcija">
             <h2>Dostupni proizvodi</h2>
             <div id="dostupniProizvodi"></div>
         </div>
 
-        <!-- 3. Prikaz stavki i ukupne cijene -->
+
         <div class="sekcija">
             <h2>Košarica</h2>
             <div id="stavkeKosarice">
@@ -122,19 +160,18 @@
     </div>
 
     <script>
-        // MODEL
-        // Konstruktor Proizvod(naziv, cijena, kolicina) s metodom ukupnaCijena()
+
         function Proizvod(naziv, cijena, kolicina = 1) {
             this.naziv = naziv;
             this.cijena = cijena;
             this.kolicina = kolicina;
 
-            this.ukupnaCijena = function() {
+            this.ukupnaCijena = function () {
                 return this.cijena * this.kolicina;
             };
         }
 
-        // Objekt kosarica s poljem proizvoda i metodama dodaj(), ukloni() i izracunajUkupno()
+
         const kosarica = {
             proizvodi: [],
 
@@ -170,7 +207,7 @@
             }
         };
 
-        // Katalog dostupnih proizvoda u trgovini
+
         const katalog = [
             { naziv: 'Bežični miš', cijena: 25.00 },
             { naziv: 'Mehanička tipkovnica', cijena: 79.90 },
@@ -186,7 +223,7 @@
         const btnPotvrdi = document.getElementById('btnPotvrdi');
         const statusEl = document.getElementById('statusPoruka');
 
-        // 1. i 2. Generiranje prikaza dostupnih proizvoda i povezivanje klika
+
         function prikaziKatalog() {
             dostupniEl.innerHTML = '';
             katalog.forEach((artikl) => {
@@ -204,7 +241,7 @@
                 gumb.textContent = 'Dodaj u košaricu';
                 gumb.addEventListener('click', () => {
                     statusEl.textContent = '';
-                    // 5. Prosljeđivanje osvjeziKosaricu kao callback funkcije
+
                     kosarica.dodaj(artikl.naziv, artikl.cijena, osvjeziKosaricu);
                 });
 
@@ -213,7 +250,7 @@
             });
         }
 
-        // 3. Callback funkcija koja osvježava prikaz stavki i ukupnog iznosa
+
         function osvjeziKosaricu() {
             stavkeEl.innerHTML = '';
 
@@ -247,18 +284,18 @@
                 });
             }
 
-            // Poziv metode izracunajUkupno()
+
             const ukupanIznos = kosarica.izracunajUkupno();
             ukupnoEl.textContent = `Ukupno: ${ukupanIznos.toFixed(2)} €`;
         }
 
-        // 4. Gumb „Isprazni košaricu”
+
         btnIsprazni.addEventListener('click', () => {
             statusEl.textContent = '';
             kosarica.isprazni(osvjeziKosaricu);
         });
 
-        // 6. Potvrda narudžbe i setTimeout poruka „Narudžba zaprimljena”
+
         btnPotvrdi.addEventListener('click', () => {
             if (kosarica.proizvodi.length === 0) return;
 
@@ -274,10 +311,11 @@
             }, 1500);
         });
 
-        // Inicijalizacija sučelja
+
         prikaziKatalog();
         osvjeziKosaricu();
     </script>
 
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="hr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
             height: 100vh;
             margin: 0;
         }
+
         .kontejner {
             background: white;
             padding: 30px 40px;
@@ -22,6 +24,7 @@
             text-align: center;
             width: 340px;
         }
+
         .kuciste-semafora {
             background-color: #222;
             width: 90px;
@@ -32,6 +35,7 @@
             flex-direction: column;
             gap: 12px;
         }
+
         .svjetlo {
             width: 60px;
             height: 60px;
@@ -40,18 +44,22 @@
             margin: 0 auto;
             transition: background-color 0.3s, box-shadow 0.3s;
         }
+
         .aktivno-crveno {
             background-color: #ff3b30;
             box-shadow: 0 0 15px #ff3b30;
         }
+
         .aktivno-zuto {
             background-color: #ffcc00;
             box-shadow: 0 0 15px #ffcc00;
         }
+
         .aktivno-zeleno {
             background-color: #34c759;
             box-shadow: 0 0 15px #34c759;
         }
+
         .gumbi {
             display: flex;
             flex-wrap: wrap;
@@ -59,6 +67,7 @@
             gap: 8px;
             margin-bottom: 15px;
         }
+
         button {
             padding: 8px 14px;
             font-size: 0.95rem;
@@ -69,14 +78,27 @@
             cursor: pointer;
             transition: background-color 0.2s;
         }
+
         button:hover {
             background-color: #0056b3;
         }
-        #btnUkljuci { background-color: #28a745; }
-        #btnUkljuci:hover { background-color: #218838; }
-        #btnIskljuci { background-color: #dc3545; }
-        #btnIskljuci:hover { background-color: #c82333; }
-        
+
+        #btnUkljuci {
+            background-color: #28a745;
+        }
+
+        #btnUkljuci:hover {
+            background-color: #218838;
+        }
+
+        #btnIskljuci {
+            background-color: #dc3545;
+        }
+
+        #btnIskljuci:hover {
+            background-color: #c82333;
+        }
+
         #prikazStanja {
             background-color: #e9ecef;
             padding: 12px;
@@ -86,6 +108,7 @@
             color: #333;
             min-height: 40px;
         }
+
         #porukaUpozorenja {
             color: #dc3545;
             font-size: 0.9rem;
@@ -94,32 +117,33 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="kontejner">
         <h2>Semafor</h2>
 
-        <!-- Vizualni prikaz semafora -->
+
         <div class="kuciste-semafora">
             <div id="svjetloCrveno" class="svjetlo"></div>
             <div id="svjetloZuto" class="svjetlo"></div>
             <div id="svjetloZeleno" class="svjetlo"></div>
         </div>
 
-        <!-- Kontrole za uključivanje/isključivanje -->
+
         <div class="gumbi">
             <button id="btnUkljuci">Uključi</button>
             <button id="btnIskljuci">Isključi</button>
         </div>
 
-        <!-- Kontrole za promjenu boje -->
+
         <div class="gumbi">
             <button id="btnCrveno">Crveno</button>
             <button id="btnZuto">Žuto</button>
             <button id="btnZeleno">Zeleno</button>
         </div>
 
-        <!-- Tekstualni prikaz stanja -->
+
         <div id="prikazStanja"></div>
         <div id="porukaUpozorenja"></div>
     </div>
@@ -127,19 +151,19 @@
     <script>
         const elementStanje = document.getElementById('prikazStanja');
         const elementUpozorenje = document.getElementById('porukaUpozorenja');
-        
+
         const svjetloCrveno = document.getElementById('svjetloCrveno');
         const svjetloZuto = document.getElementById('svjetloZuto');
         const svjetloZeleno = document.getElementById('svjetloZeleno');
 
-        // Izrada objekta semafor sa zadanim svojstvima i metodama
+
         const semafor = {
             boja: 'crvena',
-            trajanje: 30, // u sekundama
+            trajanje: 30,
             ukljucen: false,
 
             promijeniBoju(novaBoja) {
-                // Dodatno: ne dopusti promjenu boje ako je semafor isključen
+
                 if (!this.ukljucen) {
                     elementUpozorenje.textContent = 'Semafor je isključen! Prvo ga uključi.';
                     return;
@@ -148,7 +172,7 @@
                 elementUpozorenje.textContent = '';
                 this.boja = novaBoja;
 
-                // Prilagodba trajanja ovisno o boji
+
                 if (novaBoja === 'crvena') this.trajanje = 30;
                 else if (novaBoja === 'žuta') this.trajanje = 5;
                 else if (novaBoja === 'zelena') this.trajanje = 25;
@@ -169,7 +193,7 @@
             },
 
             prikaziStanje() {
-                // Resetiraj sva vizualna svjetla
+
                 svjetloCrveno.className = 'svjetlo';
                 svjetloZuto.className = 'svjetlo';
                 svjetloZeleno.className = 'svjetlo';
@@ -179,17 +203,17 @@
                     return;
                 }
 
-                // Upali odgovarajuće svjetlo na ekranu
+
                 if (this.boja === 'crvena') svjetloCrveno.classList.add('aktivno-crveno');
                 else if (this.boja === 'žuta') svjetloZuto.classList.add('aktivno-zuto');
                 else if (this.boja === 'zelena') svjetloZeleno.classList.add('aktivno-zeleno');
 
-                // Ispis teksta stanja
+
                 elementStanje.textContent = `Status: UKLJUČEN | Boja: ${this.boja.toUpperCase()} | Trajanje: ${this.trajanje}s`;
             }
         };
 
-        // Povezivanje objekta s HTML gumbima
+
         document.getElementById('btnUkljuci').addEventListener('click', () => semafor.ukljuci());
         document.getElementById('btnIskljuci').addEventListener('click', () => semafor.iskljuci());
 
@@ -197,9 +221,10 @@
         document.getElementById('btnZuto').addEventListener('click', () => semafor.promijeniBoju('žuta'));
         document.getElementById('btnZeleno').addEventListener('click', () => semafor.promijeniBoju('zelena'));
 
-        // Početni prikaz stanja pri učitavanju stranice
+
         semafor.prikaziStanje();
     </script>
 
 </body>
+
 </html>

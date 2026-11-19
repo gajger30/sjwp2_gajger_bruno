@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="hr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,7 @@
             margin: 0;
             background-color: #f4f4f9;
         }
+
         .kontejner {
             text-align: center;
             background: white;
@@ -22,6 +24,7 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             width: 320px;
         }
+
         input[type="text"] {
             width: 100%;
             padding: 10px;
@@ -31,10 +34,12 @@
             box-sizing: border-box;
             margin-bottom: 15px;
         }
+
         input[type="text"]:focus {
             border-color: #007bff;
             outline: none;
         }
+
         #poruka {
             font-size: 1.2rem;
             font-weight: bold;
@@ -42,6 +47,7 @@
             min-height: 24px;
             margin: 10px 0;
         }
+
         #pritisnutaTipka {
             font-size: 0.95rem;
             color: #555;
@@ -51,18 +57,19 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="kontejner">
         <h2>Reakcija na tipkovnicu</h2>
-        
-        <!-- Polje za unos -->
+
+
         <input type="text" id="poljeUnos" placeholder="Klikni ovdje i tipkaj...">
-        
-        <!-- Element za prikaz poruke -->
+
+
         <div id="poruka"></div>
-        
-        <!-- Zaseban element za naziv pritisnute tipke -->
+
+
         <div id="pritisnutaTipka">Pritisnuta tipka: -</div>
     </div>
 
@@ -71,29 +78,30 @@
         const poruka = document.getElementById('poruka');
         const pritisnutaTipka = document.getElementById('pritisnutaTipka');
 
-        // 1. Slušanje događaja keydown na dokumentu
+
         document.addEventListener('keydown', (event) => {
-            
-            // Dodatno: ignoriraj tipke ako fokus nije u polju za unos
+
+
             if (document.activeElement !== poljeUnos) {
                 return;
             }
 
-            // 4. i 5. Ispis naziva pritisnute tipke u zaseban element pomoću event.key
+
             pritisnutaTipka.textContent = `Pritisnuta tipka: ${event.key}`;
 
-            // 2. Ako korisnik pritisne Enter, prikaži poruku „Potvrđeno”
+
             if (event.key === 'Enter') {
                 poruka.textContent = 'Potvrđeno';
             }
 
-            // 3. Ako pritisne Escape, očisti polje za unos
+
             if (event.key === 'Escape') {
                 poljeUnos.value = '';
-                poruka.textContent = ''; // Opcionalno čisti i statusnu poruku
+                poruka.textContent = '';
             }
         });
     </script>
 
 </body>
+
 </html>
